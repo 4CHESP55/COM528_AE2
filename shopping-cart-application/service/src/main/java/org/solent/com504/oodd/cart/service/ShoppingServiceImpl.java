@@ -25,22 +25,6 @@ import org.springframework.stereotype.Component;
 public class ShoppingServiceImpl implements ShoppingService {
     @Autowired
     private ShoppingItemCatalogRepository shoppingItemCatalogRepository;
-    // note ConcurrentHashMap instead of HashMap if map can be altered while being read
-//    private Map<String, ShoppingItem> itemMap = new ConcurrentHashMap<String, ShoppingItem>();
-//
-//    private List<ShoppingItem> itemlist = Arrays.asList(new ShoppingItem("house", 20000.00),
-//            new ShoppingItem("hen", 5.00),
-//            new ShoppingItem("car", 5000.00),
-//            new ShoppingItem("pet alligator", 65.00)
-//    );
-
-    public ShoppingServiceImpl() {
-
-        // initialised the hashmap
-//        for (ShoppingItem item : shoppingItemCatalogRepository.findAll()) {
-//            itemMap.put(item.getName(), item);
-//        }
-    }
 
     @Override
     public List<ShoppingItem> getAvailableItems() {
@@ -60,16 +44,16 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     public ShoppingItem getNewItemByName(String name) {
-//        ShoppingItem templateItem = itemMap.get(name);
-//        
-//        if(templateItem==null) return null;
-//        
-//        ShoppingItem item = new ShoppingItem();
-//        item.setName(name);
-//        item.setPrice(templateItem.getPrice());
-//        item.setQuantity(0);
-//        item.setUuid(UUID.randomUUID().toString());
-        return null;
+        ShoppingItem item = null;
+        List<ShoppingItem> items = shoppingItemCatalogRepository.getItemByName(name);
+        
+        if (!items.isEmpty()) {
+            item = items.get(0);
+            item.setQuantity(0);
+            item.setUuid(UUID.randomUUID().toString());
+        }
+        
+        return item;
     }
 
 }

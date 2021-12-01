@@ -59,6 +59,34 @@
                                 </li>
                             </c:if>
                         </ul>
+                                
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span>Cart <span class="caret"></span></a>
+                                        <ul class="dropdown-menu dropdown-cart" role="menu">
+                                            <c:forEach var="item" items="${shoppingCartItems}">
+                                            <li>
+                                                <span class="item">
+                                                    <span class="item-left">
+                                                        <img src="http://lorempixel.com/50/50/" alt="" />
+                                                        <span class="item-info">
+                                                            <span class="item-name">${item.name}</span>
+                                                            <span class="item-price">£${item.price}</span>
+                                                            <span class="item-quantity">Quantity: ${item.quantity}</span>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </li>
+                                            </c:forEach>
+                                            <li class="divider"></li>
+                                            <li><a class="text-center">Total: £${shoppingcartTotal}</a></li>
+                                            <li class="divider"></li>
+                                            <li><a class="view-button" href="./cart">View Cart</a></li>
+                                            <li><a class="checkout-button" href="./cart">Checkout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
                         <ul class="nav navbar-nav navbar-right">
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">

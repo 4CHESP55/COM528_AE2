@@ -5,16 +5,20 @@
  */
 package org.solent.com504.oodd.cart.spring.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
+import org.solent.com504.oodd.cart.dao.impl.ShoppingItemDescriptionRepository;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +43,9 @@ public class PopulateDatabaseOnStart {
     
     @Autowired
     private ShoppingItemCatalogRepository shoppingItemCatalogRepository;
+    
+    @Autowired
+    private ShoppingItemDescriptionRepository shoppingItemDescriptionRepository;
 
     @PostConstruct
     public void initDatabase() {
@@ -72,6 +79,13 @@ public class PopulateDatabaseOnStart {
         } else {
             LOG.info("defaultuser already exists. Not creating new :" + defaultUser);
         }
+        
+        List<ShoppingItemDescription> descriptionlist = Arrays.asList(new ShoppingItemDescription( "This is a big house", "url1", "house")
+        );
+        
+        descriptionlist.forEach(item -> {
+            shoppingItemDescriptionRepository.save(item);
+        });
         
         List<ShoppingItem> itemlist = Arrays.asList(new ShoppingItem("house", 20000.00),
             new ShoppingItem("hen", 5.00),

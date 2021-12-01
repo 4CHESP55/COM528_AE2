@@ -8,6 +8,7 @@ package org.solent.com504.oodd.cart.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 

@@ -23,6 +23,7 @@
         <tr>
             <th>Item Name</th>
             <th>Price</th>
+            <th>Description</th>
             <th></th>
         </tr>
 
@@ -31,7 +32,16 @@
             <tr>
                 <td>${item.name}</td>
                 <td>${item.price}</td>
-                <td></td>
+                <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                    <c:choose>
+                        <c:when test="${item.name == desc.name}">
+                            <td>${desc.description}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>-- No Description yet --</td>
+                        </c:otherwise>    
+                    </c:choose>
+                </c:forEach>
                 <td>
                     <!-- post avoids url encoded parameters -->
                     <form action="./home" method="get">

@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
+import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
+import org.solent.com504.oodd.cart.model.service.ShoppingDescription;
 import org.solent.com504.oodd.cart.model.service.ShoppingService;
 import org.solent.com504.oodd.cart.web.WebObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class MVCController {
     // so the shopping cart is unique for each web session
     @Autowired
     ShoppingCart shoppingCart = null;
+    
+    @Autowired
+    ShoppingDescription shoppingDescription = null;
 
     private User getSessionUser(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -100,12 +105,15 @@ public class MVCController {
         List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
 
         List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
+        
+        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
 
         Double shoppingcartTotal = shoppingCart.getTotal();
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);
         model.addAttribute("shoppingCartItems", shoppingCartItems);
+        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
         model.addAttribute("shoppingcartTotal", shoppingcartTotal);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
@@ -130,15 +138,6 @@ public class MVCController {
         String message = "";
         String errorMessage = "";
 
-        // note that the shopping cart is is stored in the sessionUser's session
-        // so there is one cart per sessionUser
-//        ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
-//        if (shoppingCart == null) synchronized (this) {
-//            if (shoppingCart == null) {
-//                shoppingCart = WebObjectFactory.getNewShoppingCart();
-//                session.setAttribute("shoppingCart", shoppingCart);
-//            }
-//        }
         if (action == null) {
             // do nothing but show page
         } else if ("addItemToCart".equals(action)) {

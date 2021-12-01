@@ -23,6 +23,7 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
+
 .h1, h1 {
     font-size: 18px;
     color: #777;
@@ -45,4 +46,86 @@ body > .container {
 
 code {
   font-size: 80%;
+}
+
+ul.dropdown-cart{
+    min-width:250px;
+}
+ul.dropdown-cart li .item{
+    display:block;
+    padding:3px 10px;
+    margin: 3px 0;
+}
+ul.dropdown-cart li .item:hover{
+    background-color:#f3f3f3;
+}
+ul.dropdown-cart li .item:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+ul.dropdown-cart li .item-left{
+    float:left;
+}
+ul.dropdown-cart li .item-left img,
+ul.dropdown-cart li .item-left span.item-info{
+    float:left;
+}
+ul.dropdown-cart li .item-left span.item-info{
+    margin-left:10px;   
+}
+ul.dropdown-cart li .item-left span.item-info span.item-name{
+    display:block;
+    padding-top: 10px;
+    font-size: 16px;
+}
+
+ul.dropdown-cart li .item-left span.item-info span.item-price{
+    color: #6394F8;
+    margin-right: 8px;
+}
+
+ul.dropdown-cart li .item-left span.item-info span.item-quantity{
+    color: #ABB0BE;
+}
+ul.dropdown-cart li .item-right{
+    float:right;
+}
+ul.dropdown-cart li .item-right button{
+    margin-top:14px;
+}
+
+ul.dropdown-cart li .view-button {
+  background: #6394F8;
+  color:white;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  border-radius: 3px;
+  font-size: 16px;
+  margin: 5px 10px;
+}
+ul.dropdown-cart li .view-button:hover {
+    background: #85ACF9;
+}
+
+
+ul.dropdown-cart li .checkout-button {
+  background: #70DB70;
+  color:white;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  border-radius: 3px;
+  font-size: 16px;
+  margin: 5px 10px;
+}
+ul.dropdown-cart li .checkout-button:hover {
+    background: #99E699;
 }
