@@ -18,6 +18,10 @@ public interface ShoppingService {
         
         public boolean purchaseItems(ShoppingCart shoppingCart);
         
-        public ShoppingItem getNewItemByName(String uuid);
+        public ShoppingItem getNewItemByName(String name);
+        
+        public void removeItemByName(String name);
+        
+        public void addItemToCatalog(ShoppingItem shoppingItem);
 
 }

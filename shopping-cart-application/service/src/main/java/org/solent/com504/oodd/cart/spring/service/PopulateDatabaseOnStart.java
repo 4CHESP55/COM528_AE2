@@ -80,7 +80,7 @@ public class PopulateDatabaseOnStart {
             LOG.info("defaultuser already exists. Not creating new :" + defaultUser);
         }
         
-        List<ShoppingItemDescription> descriptionlist = Arrays.asList(new ShoppingItemDescription( "This is a big house", "url1", "house")
+        List<ShoppingItemDescription> descriptionlist = Arrays.asList(new ShoppingItemDescription( "This is a big house", "1", "house")
         );
         
         descriptionlist.forEach(item -> {

@@ -55,5 +55,25 @@ public class ShoppingServiceImpl implements ShoppingService {
         
         return item;
     }
+    
+    @Override
+    public void removeItemByName(String name) {
+        List<ShoppingItem> items = shoppingItemCatalogRepository.getItemByName(name);
+        
+        if (!items.isEmpty()) {
+            shoppingItemCatalogRepository.removeItemByName(name);
+        }
+    }
+    
+    @Override
+    public void addItemToCatalog(ShoppingItem shoppingItem) {
+        ShoppingItem item = null;
+        List<ShoppingItem> items = shoppingItemCatalogRepository.getItemByName(shoppingItem.getName());
+
+        if (!items.isEmpty()) {
+            throw new IllegalArgumentException("Item " +shoppingItem+" already in Catalog");
+        }
+        item = shoppingItemCatalogRepository.save(shoppingItem);
+    }
 
 }

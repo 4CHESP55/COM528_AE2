@@ -5,12 +5,20 @@
  */
 package org.solent.com504.oodd.cart.service;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.solent.com504.oodd.cart.dao.impl.ImageDbRepository;
 import org.solent.com504.oodd.cart.dao.impl.ShoppingItemDescriptionRepository;
+import org.solent.com504.oodd.cart.model.dto.Image;
 import org.solent.com504.oodd.cart.model.service.ShoppingDescription;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
@@ -26,7 +34,12 @@ import org.springframework.stereotype.Component;
 public class ShoppingDescriptionImpl implements ShoppingDescription {
     @Autowired
     private ShoppingItemDescriptionRepository shoppingItemDescriptionRepository;
-
+    
+    @Autowired
+    private ImageDbRepository imageDbRepository;
+    
+    private HashMap<String, Image> imageMap = new HashMap<String, Image>();
+    
     @Override
     public List<ShoppingItemDescription> getItemDescriptions() {
         List<ShoppingItemDescription> descriptionlist = shoppingItemDescriptionRepository.findAll();
@@ -41,6 +54,24 @@ public class ShoppingDescriptionImpl implements ShoppingDescription {
     @Override
     public void removeItemDescription(Long id) {
         shoppingItemDescriptionRepository.deleteById(id);
+    }
+    
+    @Override
+    public List<Image> getImages() {
+        List<Image> imagelist = imageDbRepository.findAll();
+        imagelist.forEach(image -> {
+            byte[] bytes = image.getContent();
+            byte[] encodeBase64 = Base64.encodeBase64(bytes);
+            String base64Encoded = null;
+            try {
+                base64Encoded = new String(encodeBase64, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(ShoppingDescriptionImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            image.setBase64image(base64Encoded);
+        });
+        
+        return imagelist;
     }
 
 }

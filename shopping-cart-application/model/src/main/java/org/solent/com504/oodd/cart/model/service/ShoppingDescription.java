@@ -7,6 +7,7 @@ package org.solent.com504.oodd.cart.model.service;
 
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
 import java.util.List;
+import org.solent.com504.oodd.cart.model.dto.Image;
 
 /**
  *
@@ -19,5 +20,7 @@ public interface ShoppingDescription {
         public void addItemDescription(ShoppingItemDescription shoppingItemDescription);
         
         public void removeItemDescription(Long id);
+        
+        public List<Image> getImages();
 
 }
