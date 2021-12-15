@@ -34,10 +34,73 @@
             </span>
         </div>
     </div>
+    <div class="panel panel-default">
     <div id="collapse" class="collapse" aria-labelledby="heading">
         <div class="panel-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            <form class="form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="itemName">Item Name</label>
+                                <input type="text" class="form-control" name="itemName" id="itemName" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="itemPrice">Price</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">£</div>
+                                    <input type="text" class="form-control" name="itemPrice" id="itemPrice" placeholder="Amount">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="itemQuantity">Quantity</label>
+                                <input type="text" class="form-control" name="itemQuantity" id="itemQuantity" placeholder="Amount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Image</label>
+                            <img id='img-upload'/>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                    Browse… <input type="file" id="imgInp">
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="itemDesc">Description</label>
+                            <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10"></textarea>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="btn btn-success">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="enabled" checked>
+                                    Enabled
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
+                                    Disabled
+                                </label>
+                            <button type="submit" class="btn btn-default">Add Item</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
         </div>
+    </div>
     </div>
     <c:forEach var="item" items="${availableItems}">
         <div class="panel panel-default">
@@ -74,8 +137,7 @@
                                     </button>
                                     <input type="hidden" name="itemUUID" value="${item.uuid}">
                                     <input type="hidden" name="itemName" value="${item.name}">
-                                    <input type="hidden" name="action" value="removeItemFromCatalog">
-                                    <button class="btn btn-danger" type="submit">
+                                    <button class="btn btn-danger" type="submit" name="action" value="removeItemFromCatalog">
                                         Delete
                                     </button>
                                 </span>
@@ -87,7 +149,78 @@
 
             <div id="collapse${item.id}" class="collapse" aria-labelledby="heading${item.id}" data-parent="#accordionExample">
                 <div class="panel-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    <form class="form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="itemName">Item Name</label>
+                                <input type="text" class="form-control" name="itemName" id="itemName" value="${item.name}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="itemPrice">Price</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">£</div>
+                                    <input type="text" class="form-control" name="itemPrice" id="itemPrice" value="${item.price}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="itemQuantity">Quantity</label>
+                                <input type="text" class="form-control" name="itemQuantity" id="itemQuantity" value="${item.quantity}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Image</label>
+                            <img id='img-upload'/>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                    Browse… <input type="file" id="imgInp">
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="itemDesc">Description</label>
+                            <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                    <c:choose>
+                                        <c:when test="${item.name == desc.name}">
+                                            <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" >${desc.description}</textarea>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10"></textarea>
+                                        </c:otherwise>    
+                                    </c:choose>
+                             </c:forEach>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="btn btn-success">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="enabled" checked>
+                                    Enabled
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
+                                    Disabled
+                                </label>
+                            <button type="submit" class="btn btn-default">Update Item</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>

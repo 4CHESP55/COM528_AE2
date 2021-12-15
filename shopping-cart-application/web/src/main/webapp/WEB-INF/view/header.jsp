@@ -24,6 +24,7 @@
 
         <!-- Custom styles for this template -->
         <link href="./resources/css/navbar.css" rel="stylesheet">
+        <link href="./resources/css/imageupload.css" rel="stylesheet">
 
     </head>
 
