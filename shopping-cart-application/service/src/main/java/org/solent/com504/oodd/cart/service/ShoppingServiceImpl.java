@@ -49,7 +49,19 @@ public class ShoppingServiceImpl implements ShoppingService {
         
         if (!items.isEmpty()) {
             item = items.get(0);
-            item.setQuantity(0);
+            item.setUuid(UUID.randomUUID().toString());
+        }
+        
+        return item;
+    }
+    
+    @Override
+    public ShoppingItem getNewItemById(Long id) {
+        ShoppingItem item = null;
+        List<ShoppingItem> items = shoppingItemCatalogRepository.getItemById(id);
+        
+        if (!items.isEmpty()) {
+            item = items.get(0);
             item.setUuid(UUID.randomUUID().toString());
         }
         
@@ -74,6 +86,17 @@ public class ShoppingServiceImpl implements ShoppingService {
             throw new IllegalArgumentException("Item " +shoppingItem+" already in Catalog");
         }
         item = shoppingItemCatalogRepository.save(shoppingItem);
+    }
+    
+    @Override
+    public void updateItemById(ShoppingItem shoppingItem) {
+        ShoppingItem item = null;
+        List<ShoppingItem> items = shoppingItemCatalogRepository.getItemById(shoppingItem.getId());
+        
+        if (!items.isEmpty()) {
+            item = items.get(0);
+            shoppingItemCatalogRepository.updateItemById(item.getId(), item.getName(), item.getQuantity(), item.getPrice());
+        }
     }
 
 }

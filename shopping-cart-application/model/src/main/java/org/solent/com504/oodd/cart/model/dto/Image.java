@@ -6,6 +6,7 @@ package org.solent.com504.oodd.cart.model.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
@@ -16,7 +17,7 @@ import javax.persistence.Lob;
 @Entity
 public class Image {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Lob

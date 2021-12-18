@@ -80,18 +80,18 @@ public class PopulateDatabaseOnStart {
             LOG.info("defaultuser already exists. Not creating new :" + defaultUser);
         }
         
-        List<ShoppingItemDescription> descriptionlist = Arrays.asList(new ShoppingItemDescription( "This is a big house", "1", "house")
+        List<ShoppingItemDescription> descriptionlist = Arrays.asList(new ShoppingItemDescription( "This is a big house", 1L, "house")
         );
         
         descriptionlist.forEach(item -> {
             shoppingItemDescriptionRepository.save(item);
         });
         
-        List<ShoppingItem> itemlist = Arrays.asList(new ShoppingItem("house", 20000.00),
-            new ShoppingItem("hen", 5.00),
-            new ShoppingItem("car", 5000.00),
-            new ShoppingItem("pet alligator", 65.00),
-            new ShoppingItem("tree", 150000.00)
+        List<ShoppingItem> itemlist = Arrays.asList(new ShoppingItem("house", 1, 20000.00),
+            new ShoppingItem("hen", 1, 5.00),
+            new ShoppingItem("car", 1, 5000.00),
+            new ShoppingItem("pet alligator", 1, 65.00),
+            new ShoppingItem("tree", 1, 150000.00)
         );
         
         itemlist.forEach(item -> {

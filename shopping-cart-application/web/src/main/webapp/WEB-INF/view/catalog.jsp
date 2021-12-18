@@ -35,9 +35,9 @@
         </div>
     </div>
     <div class="panel panel-default">
-    <div id="collapse" class="collapse" aria-labelledby="heading">
-        <div class="panel-body">
-            <form class="form">
+        <div id="collapse" class="collapse" aria-labelledby="heading">
+            <div class="panel-body">
+                <form class="form">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -62,25 +62,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Image</label>
-                            <img id='img-upload'/>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-default btn-file">
-                                    Browse… <input type="file" id="imgInp">
-                                    </span>
-                                </span>
-                                <input type="text" class="form-control" readonly>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="itemDesc">Description</label>
+                                <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10"></textarea>
                             </div>
-                        </div>
-                        </div>
-                        <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="itemDesc">Description</label>
-                            <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10"></textarea>
-                        </div>
                         </div>
                     </div>
                     <div class="row">
@@ -94,13 +80,14 @@
                                     <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
                                     Disabled
                                 </label>
-                            <button type="submit" class="btn btn-default">Add Item</button>
+                                <input type="hidden" name="action" value="addItemToCatalog">
+                                <button type="submit" class="btn btn-default">Add Item</button>
                             </div>
                         </div>
                     </div>
                 </form>
+            </div>
         </div>
-    </div>
     </div>
     <c:forEach var="item" items="${availableItems}">
         <div class="panel panel-default">
@@ -120,22 +107,22 @@
                             </div>
                             <div class="col-md-3">
                                 <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                    <c:choose>
-                                        <c:when test="${item.name == desc.name}">
-                                            Description: ${fn:substring(desc.description, 0, 30)}...
-                                        </c:when>
-                                        <c:otherwise>
-                                            Description:
-                                        </c:otherwise>    
-                                    </c:choose>
-                                </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${item.name == desc.name}">
+                                                <c:set var="itemDescription" scope="request" value="${desc.description}"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:set var="itemDescription" scope="request" value=""/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                    Description: ${fn:substring(itemDescription, 0, 30)}...            
                             </div>
                             <div class="col-md-4">
                                 <span class="pull-right">
                                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse${item.id}" aria-expanded="false" aria-controls="collapse${item.id}">
-                                        Edit
+                                        Quick Edit
                                     </button>
-                                    <input type="hidden" name="itemUUID" value="${item.uuid}">
                                     <input type="hidden" name="itemName" value="${item.name}">
                                     <button class="btn btn-danger" type="submit" name="action" value="removeItemFromCatalog">
                                         Delete
@@ -150,79 +137,131 @@
             <div id="collapse${item.id}" class="collapse" aria-labelledby="heading${item.id}" data-parent="#accordionExample">
                 <div class="panel-body">
                     <form class="form">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="itemName">Item Name</label>
-                                <input type="text" class="form-control" name="itemName" id="itemName" value="${item.name}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="itemName">Item Name</label>
+                                    <input type="text" class="form-control" name="itemName" id="itemName" value="${item.name}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="itemPrice">Price</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">£</div>
-                                    <input type="text" class="form-control" name="itemPrice" id="itemPrice" value="${item.price}">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="itemPrice">Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">£</div>
+                                        <input type="text" class="form-control" name="itemPrice" id="itemPrice" value="${item.price}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="itemQuantity">Quantity</label>
+                                    <input type="text" class="form-control" name="itemQuantity" id="itemQuantity" value="${item.quantity}">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="itemQuantity">Quantity</label>
-                                <input type="text" class="form-control" name="itemQuantity" id="itemQuantity" value="${item.quantity}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Image</label>
+                                    <img style="height: 180px; width: 100%; background-color: lightgrey;"  
+                                    <c:set var="imageHeight" scope="request" value="180px"/>
+                                    <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                        <c:choose>
+                                            <c:when test="${item.name == desc.name}">
+                                                <c:forEach var="img" items="${images}">
+                                                    <c:choose>
+                                                        <c:when test="${desc.image == img.id}">
+                                                            src="data:image/jpeg;base64,${img.base64image}"
+                                                        </c:when>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </c:when>   
+                                        </c:choose>
+                                    </c:forEach>
+                                    />
+                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#flipFlop${item.id}">
+                                        Edit image
+                                    </button> 
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="itemDesc">Description</label>                             
+                                    <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                        <c:choose>
+                                            <c:when test="${item.name == desc.name}">
+                                                <c:set var="itemDescription" scope="request" value="${desc.description}"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:set var="itemDescription" scope="request" value=""/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" >${itemDescription}</textarea>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Image</label>
-                            <img id='img-upload'/>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-default btn-file">
-                                    Browse… <input type="file" id="imgInp">
-                                    </span>
-                                </span>
-                                <input type="text" class="form-control" readonly>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="btn btn-success">
+                                        <input type="radio" name="optionsRadios" id="optionsRadios" value="enabled" checked>
+                                        Enabled
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
+                                        Disabled
+                                    </label>
+                                    <input type="hidden" name="itemId" value="${item.id}">
+                                    <input type="hidden" name="action" value="updateItem">
+                                    <button type="submit" class="btn btn-default">Update Item</button>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                        <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="itemDesc">Description</label>
-                            <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                    <c:choose>
-                                        <c:when test="${item.name == desc.name}">
-                                            <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" >${desc.description}</textarea>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10"></textarea>
-                                        </c:otherwise>    
-                                    </c:choose>
-                             </c:forEach>
-                            
-                        </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="btn btn-success">
-                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="enabled" checked>
-                                    Enabled
-                                </label>
-                                <label class="btn btn-secondary">
-                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
-                                    Disabled
-                                </label>
-                            <button type="submit" class="btn btn-default">Update Item</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
                 </div>
             </div>
+
+            <!-- The modal -->
+            <div class="modal fade" id="flipFlop${item.id}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="modalLabel">Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" action="./catalog" method="post" enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <img id='img-upload' />
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                Browse… <input type="file" id="imgInp" name="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="itemId" value="${item.id}">
+                                <button type="submit" class="btn btn-default" name="action" value="uploadImage">Upload</button>
+                               
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" id="modalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </c:forEach>
 </main>

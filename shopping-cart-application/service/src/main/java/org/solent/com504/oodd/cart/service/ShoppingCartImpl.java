@@ -38,7 +38,7 @@ public class ShoppingCartImpl implements ShoppingCart {
         boolean itemExists = false;
         for (String itemUUID : itemMap.keySet()) {
             ShoppingItem shoppingCartItem = itemMap.get(itemUUID);
-            if (shoppingCartItem.getName().equals(shoppingItem.getName())){
+            if (shoppingCartItem.getId().equals(shoppingItem.getId())){
                 Integer q = shoppingCartItem.getQuantity();
                 shoppingCartItem.setQuantity(q+1);
                 itemExists = true;

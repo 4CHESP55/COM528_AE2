@@ -16,9 +16,17 @@ public interface ShoppingItemCatalogRepository  extends JpaRepository<ShoppingIt
     @Query("select i from ShoppingItem i where name = :name")
     public List<ShoppingItem> getItemByName (@Param ("name")String name);
     
+    @Query("select i from ShoppingItem i where id = :id")
+    public List<ShoppingItem> getItemById (@Param ("id")Long id);
+    
     @Transactional
     @Modifying
     @Query("delete from ShoppingItem i where i.name = :name")
     public void removeItemByName (@Param ("name")String name);
+    
+    @Transactional
+    @Modifying
+    @Query("update ShoppingItem i set i.name = :name, i.price = :price, i.quantity = :quantity where i.id = :id")
+    public void updateItemById (@Param ("id")Long id, @Param ("name")String name, @Param("quantity")Integer quantity, @Param("price")Double price);
     
 }

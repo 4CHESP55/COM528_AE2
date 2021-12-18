@@ -1,5 +1,5 @@
 $(document).ready( function() {
-        $('#img-upload').attr('style', 'height: 180px;');
+        $('[id="img-upload"]').attr('style', 'height: 180px;');
     	$(document).on('change', '.btn-file :file', function() {
 		var input = $(this),
 			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -23,15 +23,18 @@ $(document).ready( function() {
 		        var reader = new FileReader();
 		        
 		        reader.onload = function (e) {
-		            $('#img-upload').attr('src', e.target.result);
-                            $('#img-upload').attr('style', 'height: auto;');
-		        }
+		            $('[id="img-upload"]').attr('src', e.target.result);
+                            $('[id="img-upload"]').attr('style', 'height: auto;');
+		        };
 		        
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
 
-		$("#imgInp").change(function(){
+		$('[id="imgInp"]').change(function(){
+                    
 		    readURL(this);
-		}); 	
+		}); 
+                
+
 	});

@@ -13,16 +13,16 @@ public class ShoppingItemDescription {
 
     private Long id;
     private String description = "";
-    private String images = "";
+    private Long image;
     private String name = "";
     
     public ShoppingItemDescription() {
     }
 
 
-    public ShoppingItemDescription(String description, String images, String name) {
+    public ShoppingItemDescription(String description, Long image, String name) {
         this.description = description;
-        this.images = images;
+        this.image = image;
         this.name = name;
     }
 
@@ -44,12 +44,12 @@ public class ShoppingItemDescription {
         this.description = description;
     }
 
-    public String getImages() {
-        return images;
+    public Long getImage() {
+        return image;
     }
 
-    public void setImages(String images) {
-        this.images = images;
+    public void setImage(Long image) {
+        this.image = image;
     }
 
     public String getName() {

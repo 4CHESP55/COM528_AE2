@@ -40,7 +40,7 @@ public class ImageController {
     ShoppingDescription shoppingDescription = null;
     
     @RequestMapping(value = "/upload", method = {RequestMethod.GET, RequestMethod.POST})
-    public String handleUpload(@RequestParam("file") MultipartFile file, Model model,
+    public String handleUpload(@RequestParam("file") MultipartFile file, @RequestParam("itemId") Long itemId, Model model,
             HttpSession session) throws Exception {
         if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
@@ -50,6 +50,8 @@ public class ImageController {
             
             imageDbRepository.save(dbImage);
         }
+        
+        
         
         List<Image> image = shoppingDescription.getImages();
 

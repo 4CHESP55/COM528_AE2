@@ -1,5 +1,6 @@
 package org.solent.com504.oodd.cart.spring.web;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.solent.com504.oodd.cart.dao.impl.ImageDbRepository;
+import org.solent.com504.oodd.cart.model.dto.Image;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
 import org.solent.com504.oodd.cart.model.dto.User;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
@@ -44,6 +48,9 @@ public class MVCController {
     
     @Autowired
     ShoppingDescription shoppingDescription = null;
+    
+    @Autowired
+    ImageDbRepository imageDbRepository;
 
     private User getSessionUser(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -64,6 +71,7 @@ public class MVCController {
 
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewShop(@RequestParam(name = "action", required = false) String action,
+            @RequestParam(name = "itemId", required = false) Long itemId,
             @RequestParam(name = "itemName", required = false) String itemName,
             @RequestParam(name = "itemUUID", required = false) String itemUuid,
             Model model,
@@ -91,7 +99,7 @@ public class MVCController {
         if (action == null) {
             // do nothing but show page
         } else if ("addItemToCart".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
+            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
             if (shoppingItem == null) {
                 message = "cannot add unknown " + itemName + " to cart";
             } else {
@@ -126,10 +134,13 @@ public class MVCController {
     
     @RequestMapping(value = "/catalog", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewCatalog(@RequestParam(name = "action", required = false) String action,
+            @RequestParam(name= "file", required = false) MultipartFile file,
+            @RequestParam(name = "itemId", required = false) Long itemId,
             @RequestParam(name = "itemName", required = false) String itemName,
-            @RequestParam(name = "itemUUID", required = false) String itemUuid,
+            @RequestParam(name = "itemPrice", required = false) String itemPrice,
+            @RequestParam(name = "itemQuantity", required = false) String itemQuantity,
             Model model,
-            HttpSession session) {
+            HttpSession session) throws IOException {
 
         // get sessionUser from session
         User sessionUser = getSessionUser(session);
@@ -140,6 +151,7 @@ public class MVCController {
 
         String message = "";
         String errorMessage = "";
+        Boolean descFound = false;
 
         // note that the shopping cart is is stored in the sessionUser's session
         // so there is one cart per sessionUser
@@ -152,17 +164,60 @@ public class MVCController {
 //        }
         if (action == null) {
             // do nothing but show page
-        } else if ("addItemToCart".equals(action)) {
+        } else if ("addItemToCatalog".equals(action)) {
             ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
+            Double fianlItemPrice = Double.parseDouble(itemPrice);
+            Integer finalItemQuantity = Integer.parseInt(itemQuantity);
             if (shoppingItem == null) {
-                message = "cannot add unknown " + itemName + " to cart";
+                shoppingService.addItemToCatalog(new ShoppingItem(itemName, finalItemQuantity, fianlItemPrice));
+                message = "Added " + itemName + " to catalog";
             } else {
-                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                shoppingCart.addItemToCart(shoppingItem);
+                message = itemName + " already in catalog ";
             }
         } else if ("removeItemFromCatalog".equals(action)) {
-            message = "removed " + itemName + " from catalog";
             shoppingService.removeItemByName(itemName);
+            message = "removed " + itemName + " from catalog";
+        } else if ("updateItem".equals(action)) {
+            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+            Double finalItemPrice = Double.parseDouble(itemPrice);
+            Integer finalItemQuantity = Integer.parseInt(itemQuantity);
+            shoppingItem.setName(itemName);
+            shoppingItem.setQuantity(finalItemQuantity);
+            shoppingItem.setPrice(finalItemPrice);
+            if (shoppingItem == null) {
+                message = itemName + " does not exist to update";
+            } else {
+                shoppingService.updateItemById(shoppingItem);
+                message = "Updated item with ID " + itemId;
+            }
+            
+        } else if ("uploadImage".equals(action)) {
+            if (!file.isEmpty()) {
+                byte[] bytes = file.getBytes();
+                Image dbImage = new Image();
+                dbImage.setName(file.getOriginalFilename());
+                dbImage.setContent(bytes);
+                imageDbRepository.save(dbImage);
+                
+                ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+                if (shoppingItem != null) {
+                    for (ShoppingItemDescription desc: shoppingDescription.getItemDescriptions()){
+                        if (shoppingItem.getName().equals(desc.getName())) {
+                            desc.setImage(dbImage.getId());
+                            shoppingDescription.updateItemDescription(desc);
+                            descFound = true;
+                        }
+                    }
+                    if (descFound == false){
+                    ShoppingItemDescription desc = new ShoppingItemDescription();
+                    desc.setImage(dbImage.getId());
+                    desc.setName(shoppingItem.getName());
+                    shoppingDescription.addItemDescription(desc);
+                    }
+                }
+                
+                message = "Image Uploaded";
+            }
         } else {
             message = "unknown action=" + action;
         }
@@ -174,6 +229,11 @@ public class MVCController {
         List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
 
         Double shoppingcartTotal = shoppingCart.getTotal();
+        
+        List<Image> image = shoppingDescription.getImages();
+
+        // populate model with values
+        model.addAttribute("images", image);
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);

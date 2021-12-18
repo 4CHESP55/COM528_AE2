@@ -20,8 +20,12 @@ public interface ShoppingService {
         
         public ShoppingItem getNewItemByName(String name);
         
+        public ShoppingItem getNewItemById(Long id);
+        
         public void removeItemByName(String name);
         
         public void addItemToCatalog(ShoppingItem shoppingItem);
+        
+        public void updateItemById(ShoppingItem shoppingItem);
 
 }

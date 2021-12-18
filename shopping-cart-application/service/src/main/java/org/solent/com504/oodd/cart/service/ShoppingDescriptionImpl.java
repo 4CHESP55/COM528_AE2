@@ -52,6 +52,18 @@ public class ShoppingDescriptionImpl implements ShoppingDescription {
     }
 
     @Override
+    public void updateItemDescription(ShoppingItemDescription shoppingItemDescription) {
+        
+        ShoppingItemDescription item = null;
+        List<ShoppingItemDescription> items = shoppingItemDescriptionRepository.getByName(shoppingItemDescription.getName());
+        
+        if (!items.isEmpty()) {
+            item = items.get(0);
+            shoppingItemDescriptionRepository.updateByName(item.getDescription(), item.getImage(), item.getName());
+        }
+    }
+    
+    @Override
     public void removeItemDescription(Long id) {
         shoppingItemDescriptionRepository.deleteById(id);
     }
@@ -72,6 +84,29 @@ public class ShoppingDescriptionImpl implements ShoppingDescription {
         });
         
         return imagelist;
+    }
+    
+    @Override
+    public Image getImage(Long id) {
+        Image image = null;
+        List<Image> images = imageDbRepository.getImageById(id);
+        
+        if (!images.isEmpty()) {
+            image = images.get(0);
+        
+        
+            byte[] bytes = image.getContent();
+            byte[] encodeBase64 = Base64.encodeBase64(bytes);
+            String base64Encoded = null;
+            try {
+                base64Encoded = new String(encodeBase64, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(ShoppingDescriptionImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            image.setBase64image(base64Encoded);
+       }
+        
+        return image;
     }
 
 }

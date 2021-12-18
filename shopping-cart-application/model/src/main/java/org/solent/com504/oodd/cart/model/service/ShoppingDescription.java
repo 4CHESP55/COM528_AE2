@@ -19,8 +19,12 @@ public interface ShoppingDescription {
         
         public void addItemDescription(ShoppingItemDescription shoppingItemDescription);
         
+        public void updateItemDescription(ShoppingItemDescription shoppingItemDescription);
+        
         public void removeItemDescription(Long id);
         
         public List<Image> getImages();
+        
+        public Image getImage(Long id);
 
 }
