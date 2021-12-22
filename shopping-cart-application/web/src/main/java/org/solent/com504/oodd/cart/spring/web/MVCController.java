@@ -120,6 +120,11 @@ public class MVCController {
         List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
 
         Double shoppingcartTotal = shoppingCart.getTotal();
+        
+        List<Image> image = shoppingDescription.getImages();
+
+        // populate model with values
+        model.addAttribute("images", image);
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);
@@ -136,6 +141,7 @@ public class MVCController {
     public String viewCatalog(@RequestParam(name = "action", required = false) String action,
             @RequestParam(name= "file", required = false) MultipartFile file,
             @RequestParam(name = "itemId", required = false) Long itemId,
+            @RequestParam(name = "itemDesc", required = false) String itemDesc,
             @RequestParam(name = "itemName", required = false) String itemName,
             @RequestParam(name = "itemPrice", required = false) String itemPrice,
             @RequestParam(name = "itemQuantity", required = false) String itemQuantity,
@@ -169,7 +175,12 @@ public class MVCController {
             Double fianlItemPrice = Double.parseDouble(itemPrice);
             Integer finalItemQuantity = Integer.parseInt(itemQuantity);
             if (shoppingItem == null) {
-                shoppingService.addItemToCatalog(new ShoppingItem(itemName, finalItemQuantity, fianlItemPrice));
+                ShoppingItem newItem = new ShoppingItem(itemName, finalItemQuantity, fianlItemPrice);
+                shoppingService.addItemToCatalog(newItem);
+                ShoppingItemDescription newdesc = new ShoppingItemDescription();
+                newdesc.setDescription(itemDesc);
+                newdesc.setItemId(newItem.getId());
+                shoppingDescription.addItemDescription(newdesc);
                 message = "Added " + itemName + " to catalog";
             } else {
                 message = itemName + " already in catalog ";
@@ -181,13 +192,27 @@ public class MVCController {
             ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
             Double finalItemPrice = Double.parseDouble(itemPrice);
             Integer finalItemQuantity = Integer.parseInt(itemQuantity);
-            shoppingItem.setName(itemName);
-            shoppingItem.setQuantity(finalItemQuantity);
-            shoppingItem.setPrice(finalItemPrice);
+            
             if (shoppingItem == null) {
                 message = itemName + " does not exist to update";
             } else {
+                shoppingItem.setName(itemName);
+                shoppingItem.setQuantity(finalItemQuantity);
+                shoppingItem.setPrice(finalItemPrice);
                 shoppingService.updateItemById(shoppingItem);
+                for (ShoppingItemDescription desc : shoppingDescription.getItemDescriptions()) {
+                    if (itemId.equals(desc.getItemId())) {
+                        desc.setDescription(itemDesc);
+                        shoppingDescription.updateItemDescription(desc);
+                        descFound = true;
+                    }
+                }
+                if (descFound == false) {
+                    ShoppingItemDescription newdesc = new ShoppingItemDescription();
+                    newdesc.setDescription(itemDesc);
+                    newdesc.setItemId(itemId);
+                    shoppingDescription.addItemDescription(newdesc);
+                }
                 message = "Updated item with ID " + itemId;
             }
             
@@ -202,17 +227,17 @@ public class MVCController {
                 ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
                 if (shoppingItem != null) {
                     for (ShoppingItemDescription desc: shoppingDescription.getItemDescriptions()){
-                        if (shoppingItem.getName().equals(desc.getName())) {
+                        if (itemId.equals(desc.getItemId())) {
                             desc.setImage(dbImage.getId());
                             shoppingDescription.updateItemDescription(desc);
                             descFound = true;
                         }
                     }
                     if (descFound == false){
-                    ShoppingItemDescription desc = new ShoppingItemDescription();
-                    desc.setImage(dbImage.getId());
-                    desc.setName(shoppingItem.getName());
-                    shoppingDescription.addItemDescription(desc);
+                    ShoppingItemDescription newdesc = new ShoppingItemDescription();
+                    newdesc.setImage(dbImage.getId());
+                    newdesc.setItemId(itemId);
+                    shoppingDescription.addItemDescription(newdesc);
                     }
                 }
                 

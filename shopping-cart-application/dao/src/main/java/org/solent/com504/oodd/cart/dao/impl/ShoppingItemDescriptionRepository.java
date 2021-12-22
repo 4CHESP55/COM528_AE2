@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface ShoppingItemDescriptionRepository  extends JpaRepository<ShoppingItemDescription,Long>{
     
-    @Query("select i from ShoppingItemDescription i where name = :name")
-    public List<ShoppingItemDescription> getByName (@Param ("name")String name);
+    @Query("select i from ShoppingItemDescription i where itemId = :itemId")
+    public List<ShoppingItemDescription> getById (@Param ("itemId")Long itemId);
     
     @Transactional
     @Modifying
-    @Query("update ShoppingItemDescription i set i.description = :description, i.image = :image where i.name = :name")
-    public void updateByName (@Param ("description")String description, @Param ("image")Long image, @Param("name")String name);
+    @Query("update ShoppingItemDescription i set i.description = :description, i.image = :image where i.itemId = :itemId")
+    public void updateById (@Param ("description")String description, @Param ("image")Long image, @Param("itemId")Long itemId);
     
 }

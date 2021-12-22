@@ -44,6 +44,11 @@
             <AppenderRef ref="appLog"/>
         </Logger>
         
+        <Logger name="org.hibernate.type.descriptor.sql.BasicBinder"  additivity="false" level="TRACE">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="appLog"/>
+        </Logger>
+        
         <Logger name="org.hsqldb.jdbc"  additivity="false" level="INFO">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="appLog"/>

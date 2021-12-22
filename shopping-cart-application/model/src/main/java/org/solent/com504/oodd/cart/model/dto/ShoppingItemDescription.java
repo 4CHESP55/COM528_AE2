@@ -1,29 +1,26 @@
 package org.solent.com504.oodd.cart.model.dto;
 
-import java.util.List;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class ShoppingItemDescription {
 
     private Long id;
-    private String description = "";
-    private Long image;
-    private String name = "";
+    private String description=null;
+    private Long image=0L;
+    private Long itemId=0L;
     
     public ShoppingItemDescription() {
     }
 
 
-    public ShoppingItemDescription(String description, Long image, String name) {
+    public ShoppingItemDescription(String description, Long image, Long itemId) {
         this.description = description;
         this.image = image;
-        this.name = name;
+        this.itemId = itemId;
     }
 
     @Id
@@ -52,12 +49,12 @@ public class ShoppingItemDescription {
         this.image = image;
     }
 
-    public String getName() {
-        return name;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
 }

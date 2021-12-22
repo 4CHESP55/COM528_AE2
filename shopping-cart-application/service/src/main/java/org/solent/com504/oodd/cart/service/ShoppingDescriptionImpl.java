@@ -48,18 +48,19 @@ public class ShoppingDescriptionImpl implements ShoppingDescription {
 
     @Override
     public void addItemDescription(ShoppingItemDescription shoppingItemDescription) {
-        shoppingItemDescriptionRepository.save(shoppingItemDescription);
+        ShoppingItemDescription desc = null;
+        desc = shoppingItemDescriptionRepository.save(shoppingItemDescription);
     }
 
     @Override
     public void updateItemDescription(ShoppingItemDescription shoppingItemDescription) {
         
         ShoppingItemDescription item = null;
-        List<ShoppingItemDescription> items = shoppingItemDescriptionRepository.getByName(shoppingItemDescription.getName());
+        List<ShoppingItemDescription> items = shoppingItemDescriptionRepository.getById(shoppingItemDescription.getItemId());
         
         if (!items.isEmpty()) {
             item = items.get(0);
-            shoppingItemDescriptionRepository.updateByName(item.getDescription(), item.getImage(), item.getName());
+            shoppingItemDescriptionRepository.updateById(item.getDescription(), item.getImage(), item.getItemId());
         }
     }
     

@@ -106,17 +106,14 @@
                                 Price: ${item.price}
                             </div>
                             <div class="col-md-3">
+                                Description: 
                                 <c:forEach var="desc" items="${shoppingItemDescriptions}">
                                         <c:choose>
-                                            <c:when test="${item.name == desc.name}">
-                                                <c:set var="itemDescription" scope="request" value="${desc.description}"/>
+                                            <c:when test="${item.id == desc.itemId}">
+                                                ${fn:substring(desc.description, 0, 30)}...   
                                             </c:when>
-                                            <c:otherwise>
-                                                <c:set var="itemDescription" scope="request" value=""/>
-                                            </c:otherwise>
                                         </c:choose>
-                                    </c:forEach>
-                                    Description: ${fn:substring(itemDescription, 0, 30)}...            
+                                    </c:forEach>       
                             </div>
                             <div class="col-md-4">
                                 <span class="pull-right">
@@ -168,7 +165,7 @@
                                     <c:set var="imageHeight" scope="request" value="180px"/>
                                     <c:forEach var="desc" items="${shoppingItemDescriptions}">
                                         <c:choose>
-                                            <c:when test="${item.name == desc.name}">
+                                            <c:when test="${item.id == desc.itemId}">
                                                 <c:forEach var="img" items="${images}">
                                                     <c:choose>
                                                         <c:when test="${desc.image == img.id}">
@@ -187,19 +184,8 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label for="itemDesc">Description</label>                             
-                                    <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                        <c:choose>
-                                            <c:when test="${item.name == desc.name}">
-                                                <c:set var="itemDescription" scope="request" value="${desc.description}"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:set var="itemDescription" scope="request" value=""/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" >${itemDescription}</textarea>
-
+                                    <label for="itemDesc">Description</label>
+                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" ><c:forEach var="desc" items="${shoppingItemDescriptions}"><c:choose><c:when test="${item.id == desc.itemId}">${desc.description}</c:when></c:choose></c:forEach></textarea>
                                 </div>
                             </div>
                         </div>
