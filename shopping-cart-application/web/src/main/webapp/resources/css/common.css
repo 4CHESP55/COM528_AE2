@@ -46,3 +46,31 @@ body {
 .has-error {
     color: red
 }
+
+#product {
+  font-size: 14px;
+  line-height: 1.5;
+}
+#product p.collapse[aria-expanded="false"] {
+    display: block;
+    height: 380px !important;
+    overflow: hidden;
+}
+#product p.collapsing[aria-expanded="false"] {
+    height: 300px !important;
+}
+
+#product a.collapsed:after  {
+    content: '+ Show More';
+}
+
+#product a:not(.collapsed):after {
+    content: '- Show Less';
+}
+
+#product hr {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    border: 0;
+    border-top: 1px solid #eee
+}

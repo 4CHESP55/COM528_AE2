@@ -65,7 +65,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="itemDesc">Description</label>
-                                <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10"></textarea>
+                                <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" maxlength="5000"></textarea>
                             </div>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="itemDesc">Description</label>
-                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" ><c:forEach var="desc" items="${shoppingItemDescriptions}"><c:choose><c:when test="${item.id == desc.itemId}">${desc.description}</c:when></c:choose></c:forEach></textarea>
+                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" maxlength="5000" ><c:forEach var="desc" items="${shoppingItemDescriptions}"><c:choose><c:when test="${item.id == desc.itemId}">${desc.description}</c:when></c:choose></c:forEach></textarea>
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -135,6 +136,60 @@ public class MVCController {
         model.addAttribute("errorMessage", errorMessage);
 
         return "home";
+    }
+    
+    @RequestMapping(value = "/product", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewProduct(@RequestParam(name = "action", required = false) String action,
+            @RequestParam(name = "itemId", required = false) Long itemId,
+            Model model,
+            HttpSession session) {
+
+        // get sessionUser from session
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        // used to set tab selected
+        model.addAttribute("selectedPage", "product");
+
+        String message = "";
+        String itemName = "";
+        Double itemPrice = 0.00;
+        String itemDescription = "";
+        String itemImage = "";
+        if (action == null) {
+            // do nothing but show page
+        } else if ("viewProduct".equals(action)) {
+            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+            for (ShoppingItemDescription desc : shoppingDescription.getItemDescriptions()) {
+                if (itemId.equals(desc.getItemId())) {
+                    itemDescription = desc.getDescription();
+                    for (Image image : shoppingDescription.getImages()) {
+                        if (Objects.equals(desc.getImage(), image.getId())) {
+                            itemImage = image.getBase64image();
+                        }
+                    }
+                }
+            }
+            if (shoppingItem == null) {
+                message = "cannot find item with id:  " + itemId;
+            } else {
+                itemName = shoppingItem.getName();
+                itemPrice = shoppingItem.getPrice();             
+            }
+        } else {
+            message = "unknown action=" + action;
+        }
+
+        
+        // populate model with values
+        model.addAttribute("message", message);
+        model.addAttribute("itemId", itemId);
+        model.addAttribute("itemName", itemName);
+        model.addAttribute("itemPrice", itemPrice);
+        model.addAttribute("itemDescription", itemDescription);
+        model.addAttribute("itemImage", itemImage);
+
+        return "product";
     }
     
     @RequestMapping(value = "/catalog", method = {RequestMethod.GET, RequestMethod.POST})

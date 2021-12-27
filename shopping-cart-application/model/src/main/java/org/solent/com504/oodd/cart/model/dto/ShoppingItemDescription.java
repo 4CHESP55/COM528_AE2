@@ -1,14 +1,20 @@
 package org.solent.com504.oodd.cart.model.dto;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class ShoppingItemDescription {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Lob
+    @Column(length = 5000)
     private String description=null;
     private Long image=0L;
     private Long itemId=0L;
@@ -23,9 +29,7 @@ public class ShoppingItemDescription {
         this.itemId = itemId;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
+        public Long getId() {
         return id;
     }
 
