@@ -39,31 +39,31 @@
                 <div class="row">
                     <div class="col-xs-2">
                         <img style="width: 100%"
-                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                             <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                 <c:choose>
+                                     <c:when test="${item.id == desc.itemId}">
+                                         <c:forEach var="img" items="${images}">
                                              <c:choose>
-                                                 <c:when test="${item.id == desc.itemId}">
-                                                     <c:forEach var="img" items="${images}">
-                                                         <c:choose>
-                                                             <c:when test="${desc.image == img.id}">
-                                                                 src="data:image/jpeg;base64,${img.base64image}"
-                                                             </c:when>
-                                                         </c:choose>
-                                                     </c:forEach>
-                                                 </c:when>   
+                                                 <c:when test="${desc.image == img.id}">
+                                                     src="data:image/jpeg;base64,${img.base64image}"
+                                                 </c:when>
                                              </c:choose>
                                          </c:forEach>
-                                    />
+                                     </c:when>   
+                                 </c:choose>
+                             </c:forEach>
+                             />
                     </div>
                     <div class="col-xs-4">
                         <h4 class="product-name"><strong>${item.name}</strong></h4>
                         <h4>
                             <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                        <c:choose>
-                                            <c:when test="${item.id == desc.itemId}">
-                                                <small>${fn:substring(desc.description, 0, 100)}...</small>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
+                                <c:choose>
+                                    <c:when test="${item.id == desc.itemId}">
+                                        <small>${fn:substring(desc.description, 0, 100)}...</small>
+                                    </c:when>
+                                </c:choose>
+                            </c:forEach>
                         </h4>
                     </div>
                     <div class="col-xs-6">
@@ -112,9 +112,9 @@
                 </div>
                 <div class="col-xs-3">
                     <form action="./checkout">
-                    <button type="sumbit" class="btn btn-success btn-block">
-                        Checkout
-                    </button>
+                        <button type="sumbit" class="btn btn-success btn-block">
+                            Checkout
+                        </button>
                     </form>
                 </div>
             </div>
