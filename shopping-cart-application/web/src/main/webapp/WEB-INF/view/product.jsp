@@ -15,15 +15,34 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     <div style="color:green;">${message}</div>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <H1>${itemName}</H1>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h5><span class="glyphicon glyphicon-info-sign"></span> Product Details</h5>
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="./home" class="btn btn-primary btn-sm btn-block">
+                            <span class="glyphicon glyphicon-share-alt"></span> Continue shopping
+                        </a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="panel-body">
             <div class="row">
-                <div class="col-md-6"><img style="width: 100%" src="data:image/jpeg;base64,${itemImage}" /></div>
+                <div class="col-md-6">
+                    <img style="height: 600px; width: 100%; background-color: lightgrey;"
+                        <c:choose>
+                            <c:when test="${itemImage != ''}">
+                                <img style="width: 100%" src="data:image/jpeg;base64,${itemImage}" />
+                            </c:when>
+                            <c:otherwise>
+                                <img style="height: 600px; width: 100%; background-color: lightgrey;" />
+                            </c:otherwise>
+                        </c:choose>
+                </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6">
@@ -47,31 +66,45 @@
                                             <div class="form-group">
                                                 <label for="itemQuantity">Quantity: </label>
                                                 <div class="input-group">
-                                                    <input type="number" class="form-control" id="itemQuantity" name="itemQuantity"  min="1" max="100">
+                                                    <c:choose>
+                                                        <c:when test="${itemQuantity == 0}">
+                                                            <input type="number" class="form-control" id="itemQuantity" name="itemQuantity"  min="1" max="100" disabled>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="number" class="form-control" id="itemQuantity" name="itemQuantity"  min="1" max="100">
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </div>
                                             </div></td><td style="width: 60%">
                                             <input type="hidden" name="itemId" value="${itemId}">
                                             <input type="hidden" name="itemName" value="${itemName}">
                                             <input type="hidden" name="action" value="addItemToCart">
-                                            <button type="submit" class="btn btn-success btn-block" >Add to cart</button>
+                                            <c:choose>
+                                                <c:when test="${itemQuantity == 0}">
+                                                    <button type="button" class="btn btn-danger btn-block" >Out of stock</button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="submit" class="btn btn-success btn-block" >Add to cart</button>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </tr>
                                 </table>
                             </form>
                         </div>
                     </div>
+                                            <hr>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="headingOne">
+                                    <div class="panel-heading" id="headingOne">
                                         <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                Description
+                                            <a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                Description <span class="glyphicon glyphicon-chevron-down pull-right"></span>
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
                                         <div class="panel-body">
                                             <div id="product">
                                                 <p class="collapse" id="collapseExample" aria-expanded="false" style="white-space: pre-wrap">${itemDescription}</p>

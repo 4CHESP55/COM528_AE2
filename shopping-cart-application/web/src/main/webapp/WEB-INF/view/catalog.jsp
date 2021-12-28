@@ -73,11 +73,11 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="btn btn-success">
-                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="enabled" checked>
+                                    <input type="radio" name="enabled" id="optionsRadios" value="true" checked>
                                     Enabled
                                 </label>
                                 <label class="btn btn-secondary">
-                                    <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
+                                    <input type="radio" name="enabled" id="optionsRadios" value="false">
                                     Disabled
                                 </label>
                                 <input type="hidden" name="action" value="addItemToCatalog">
@@ -108,12 +108,12 @@
                             <div class="col-md-3">
                                 Description: 
                                 <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                        <c:choose>
-                                            <c:when test="${item.id == desc.itemId}">
-                                                ${fn:substring(desc.description, 0, 30)}...   
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>       
+                                    <c:choose>
+                                        <c:when test="${item.id == desc.itemId}">
+                                            ${fn:substring(desc.description, 0, 30)}...   
+                                        </c:when>
+                                    </c:choose>
+                                </c:forEach>       
                             </div>
                             <div class="col-md-4">
                                 <span class="pull-right">
@@ -162,21 +162,21 @@
                                 <div class="form-group">
                                     <label>Image</label>
                                     <img style="height: 180px; width: 100%; background-color: lightgrey;"  
-                                    <c:set var="imageHeight" scope="request" value="180px"/>
-                                    <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                        <c:choose>
-                                            <c:when test="${item.id == desc.itemId}">
-                                                <c:forEach var="img" items="${images}">
-                                                    <c:choose>
-                                                        <c:when test="${desc.image == img.id}">
-                                                            src="data:image/jpeg;base64,${img.base64image}"
-                                                        </c:when>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </c:when>   
-                                        </c:choose>
-                                    </c:forEach>
-                                    />
+                                         <c:set var="imageHeight" scope="request" value="180px"/>
+                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                             <c:choose>
+                                                 <c:when test="${item.id == desc.itemId}">
+                                                     <c:forEach var="img" items="${images}">
+                                                         <c:choose>
+                                                             <c:when test="${desc.image == img.id}">
+                                                                 src="data:image/jpeg;base64,${img.base64image}"
+                                                             </c:when>
+                                                         </c:choose>
+                                                     </c:forEach>
+                                                 </c:when>   
+                                             </c:choose>
+                                         </c:forEach>
+                                         />
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#flipFlop${item.id}">
                                         Edit image
                                     </button> 
@@ -186,21 +186,21 @@
                                 <div class="form-group">
                                     <label for="itemDesc">Description</label>
                                     <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" maxlength="5000" ><c:forEach var="desc" items="${shoppingItemDescriptions}"><c:choose><c:when test="${item.id == desc.itemId}">${desc.description}</c:when></c:choose></c:forEach></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="btn btn-success">
-                                        <input type="radio" name="optionsRadios" id="optionsRadios" value="enabled" checked>
-                                        Enabled
-                                    </label>
-                                    <label class="btn btn-secondary">
-                                        <input type="radio" name="optionsRadios" id="optionsRadios" value="disabled">
-                                        Disabled
-                                    </label>
-                                    <input type="hidden" name="itemId" value="${item.id}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="btn btn-success">
+                                                    <input type="radio" name="enabled" id="optionsRadios" value="true" checked>
+                                                    Enabled
+                                                </label>
+                                                <label class="btn btn-secondary">
+                                                    <input type="radio" name="enabled" id="optionsRadios" value="false">
+                                                    Disabled
+                                                </label>
+                                                <input type="hidden" name="itemId" value="${item.id}">
                                     <input type="hidden" name="action" value="updateItem">
                                     <button type="submit" class="btn btn-default">Update Item</button>
                                 </div>
@@ -236,12 +236,12 @@
                                 </div>
                                 <input type="hidden" name="itemId" value="${item.id}">
                                 <button type="submit" class="btn btn-default" name="action" value="uploadImage">Upload</button>
-                               
+
 
                             </form>
                         </div>
                         <div class="modal-footer">
-                            
+
                             <button type="button" id="modalClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>

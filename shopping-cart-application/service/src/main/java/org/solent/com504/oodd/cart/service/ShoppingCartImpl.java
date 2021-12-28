@@ -57,6 +57,25 @@ public class ShoppingCartImpl implements ShoppingCart {
         // ANSWER
         itemMap.remove(itemUuid);
     }
+    
+    @Override
+    public void reduceItemFromCart(String itemUuid) {
+        ShoppingItem shoppingCartItem = itemMap.get(itemUuid);
+        Integer quantity = shoppingCartItem.getQuantity();
+        if (quantity > 1){
+            shoppingCartItem.setQuantity(quantity-1);
+        } else {
+            itemMap.remove(itemUuid);
+        }
+        
+    }
+    
+    @Override
+    public void increaseItemFromCart(String itemUuid) {
+        ShoppingItem shoppingCartItem = itemMap.get(itemUuid);
+        Integer quantity = shoppingCartItem.getQuantity();
+        shoppingCartItem.setQuantity(quantity+1);
+    }
 
     @Override
     public double getTotal() {

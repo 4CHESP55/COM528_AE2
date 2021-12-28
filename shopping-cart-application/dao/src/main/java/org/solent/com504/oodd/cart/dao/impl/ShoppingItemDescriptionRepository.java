@@ -16,6 +16,9 @@ public interface ShoppingItemDescriptionRepository  extends JpaRepository<Shoppi
     @Query("select i from ShoppingItemDescription i where itemId = :itemId")
     public List<ShoppingItemDescription> getById (@Param ("itemId")Long itemId);
     
+    @Query("select i from ShoppingItemDescription i where enabled = 'true'")
+    public List<ShoppingItemDescription> findEnabled ();
+    
     @Transactional
     @Modifying
     @Query("update ShoppingItemDescription i set i.description = :description, i.image = :image where i.itemId = :itemId")

@@ -17,6 +17,8 @@ public interface ShoppingDescription {
     
         public List<ShoppingItemDescription> getItemDescriptions();
         
+        public List<ShoppingItemDescription> getEnabledItems();
+        
         public void addItemDescription(ShoppingItemDescription shoppingItemDescription);
         
         public void updateItemDescription(ShoppingItemDescription shoppingItemDescription);

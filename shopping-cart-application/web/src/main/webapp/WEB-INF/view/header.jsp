@@ -64,13 +64,27 @@
                                 
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span>Cart <span class="caret"></span></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span> Cart <span class="caret"></span></a>
                                         <ul class="dropdown-menu dropdown-cart" role="menu">
                                             <c:forEach var="item" items="${shoppingCartItems}">
                                             <li>
                                                 <span class="item">
                                                     <span class="item-left">
-                                                        <img src="http://lorempixel.com/50/50/" alt="" />
+                                                        <img style="width: 50px"
+                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                             <c:choose>
+                                                 <c:when test="${item.id == desc.itemId}">
+                                                     <c:forEach var="img" items="${images}">
+                                                         <c:choose>
+                                                             <c:when test="${desc.image == img.id}">
+                                                                 src="data:image/jpeg;base64,${img.base64image}"
+                                                             </c:when>
+                                                         </c:choose>
+                                                     </c:forEach>
+                                                 </c:when>   
+                                             </c:choose>
+                                         </c:forEach>
+                                    />
                                                         <span class="item-info">
                                                             <span class="item-name">${item.name}</span>
                                                             <span class="item-price">£${item.price}</span>
@@ -84,7 +98,7 @@
                                             <li><a class="text-center">Total: £${shoppingcartTotal}</a></li>
                                             <li class="divider"></li>
                                             <li><a class="view-button" href="./cart">View Cart</a></li>
-                                            <li><a class="checkout-button" href="./cart">Checkout</a></li>
+                                            <li><a class="checkout-button" href="./checkout">Checkout</a></li>
                                         </ul>
                                     </li>
                                 </ul>

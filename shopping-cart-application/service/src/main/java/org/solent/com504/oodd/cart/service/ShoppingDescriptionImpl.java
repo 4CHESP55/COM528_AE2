@@ -45,6 +45,12 @@ public class ShoppingDescriptionImpl implements ShoppingDescription {
         List<ShoppingItemDescription> descriptionlist = shoppingItemDescriptionRepository.findAll();
         return descriptionlist;
     }
+    
+    @Override
+    public List<ShoppingItemDescription> getEnabledItems() {
+        List<ShoppingItemDescription> enabledlist = shoppingItemDescriptionRepository.findEnabled();
+        return enabledlist;
+    }
 
     @Override
     public void addItemDescription(ShoppingItemDescription shoppingItemDescription) {

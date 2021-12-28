@@ -20,6 +20,10 @@ public interface ShoppingCart {
     
     public void removeItemFromCart(String itemUuid);
     
+    public void reduceItemFromCart(String itemUuid);
+    
+    public void increaseItemFromCart(String itemUuid);
+    
     public double getTotal();
     
 }

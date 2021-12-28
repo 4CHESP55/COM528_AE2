@@ -18,15 +18,17 @@ public class ShoppingItemDescription {
     private String description=null;
     private Long image=0L;
     private Long itemId=0L;
+    private Boolean enabled=true;
     
     public ShoppingItemDescription() {
     }
 
 
-    public ShoppingItemDescription(String description, Long image, Long itemId) {
+    public ShoppingItemDescription(String description, Long image, Long itemId, Boolean enabled) {
         this.description = description;
         this.image = image;
         this.itemId = itemId;
+        this.enabled = enabled;
     }
 
         public Long getId() {
@@ -59,6 +61,14 @@ public class ShoppingItemDescription {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+    
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

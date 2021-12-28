@@ -115,6 +115,8 @@ public class MVCController {
         }
 
         List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
+        
+        List<ShoppingItemDescription> enabledItems = shoppingDescription.getEnabledItems();
 
         List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
         
@@ -129,6 +131,7 @@ public class MVCController {
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);
+        model.addAttribute("enabledItems", enabledItems);
         model.addAttribute("shoppingCartItems", shoppingCartItems);
         model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
         model.addAttribute("shoppingcartTotal", shoppingcartTotal);
@@ -156,6 +159,7 @@ public class MVCController {
         Double itemPrice = 0.00;
         String itemDescription = "";
         String itemImage = "";
+        Integer itemQuantity = 0;
         if (action == null) {
             // do nothing but show page
         } else if ("viewProduct".equals(action)) {
@@ -174,7 +178,8 @@ public class MVCController {
                 message = "cannot find item with id:  " + itemId;
             } else {
                 itemName = shoppingItem.getName();
-                itemPrice = shoppingItem.getPrice();             
+                itemPrice = shoppingItem.getPrice();
+                itemQuantity = shoppingItem.getQuantity();
             }
         } else {
             message = "unknown action=" + action;
@@ -188,6 +193,7 @@ public class MVCController {
         model.addAttribute("itemPrice", itemPrice);
         model.addAttribute("itemDescription", itemDescription);
         model.addAttribute("itemImage", itemImage);
+        model.addAttribute("itemQuantity", itemQuantity);
 
         return "product";
     }
@@ -200,6 +206,7 @@ public class MVCController {
             @RequestParam(name = "itemName", required = false) String itemName,
             @RequestParam(name = "itemPrice", required = false) String itemPrice,
             @RequestParam(name = "itemQuantity", required = false) String itemQuantity,
+            @RequestParam(name = "enabled", required = false) String enabled,
             Model model,
             HttpSession session) throws IOException {
 
@@ -229,12 +236,15 @@ public class MVCController {
             ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
             Double fianlItemPrice = Double.parseDouble(itemPrice);
             Integer finalItemQuantity = Integer.parseInt(itemQuantity);
+            Boolean finalEnabled = Boolean.parseBoolean(enabled);
+            
             if (shoppingItem == null) {
                 ShoppingItem newItem = new ShoppingItem(itemName, finalItemQuantity, fianlItemPrice);
                 shoppingService.addItemToCatalog(newItem);
                 ShoppingItemDescription newdesc = new ShoppingItemDescription();
                 newdesc.setDescription(itemDesc);
                 newdesc.setItemId(newItem.getId());
+                newdesc.setEnabled(finalEnabled);
                 shoppingDescription.addItemDescription(newdesc);
                 message = "Added " + itemName + " to catalog";
             } else {
@@ -247,6 +257,7 @@ public class MVCController {
             ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
             Double finalItemPrice = Double.parseDouble(itemPrice);
             Integer finalItemQuantity = Integer.parseInt(itemQuantity);
+            Boolean finalEnabled = Boolean.parseBoolean(enabled);
             
             if (shoppingItem == null) {
                 message = itemName + " does not exist to update";
@@ -258,6 +269,7 @@ public class MVCController {
                 for (ShoppingItemDescription desc : shoppingDescription.getItemDescriptions()) {
                     if (itemId.equals(desc.getItemId())) {
                         desc.setDescription(itemDesc);
+                        desc.setEnabled(finalEnabled);
                         shoppingDescription.updateItemDescription(desc);
                         descFound = true;
                     }
@@ -266,6 +278,7 @@ public class MVCController {
                     ShoppingItemDescription newdesc = new ShoppingItemDescription();
                     newdesc.setDescription(itemDesc);
                     newdesc.setItemId(itemId);
+                    newdesc.setEnabled(finalEnabled);
                     shoppingDescription.addItemDescription(newdesc);
                 }
                 message = "Updated item with ID " + itemId;
@@ -357,6 +370,12 @@ public class MVCController {
         } else if ("removeItemFromCart".equals(action)) {
             message = "removed " + itemName + " from cart";
             shoppingCart.removeItemFromCart(itemUuid);
+        } else if ("reduceItemFromCart".equals(action)) {
+            message = "reducing  "+itemName + " in cart";
+            shoppingCart.reduceItemFromCart(itemUuid);
+        } else if ("increaseItemFromCart".equals(action)) {
+            message = "increasing "+itemName + " in cart";
+            shoppingCart.increaseItemFromCart(itemUuid);
         } else {
             message = "unknown action=" + action;
         }
@@ -366,6 +385,15 @@ public class MVCController {
         List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
 
         Double shoppingcartTotal = shoppingCart.getTotal();
+        
+        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
+        
+        List<Image> image = shoppingDescription.getImages();
+
+        // populate model with values
+        model.addAttribute("images", image);
+
+        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);
@@ -375,6 +403,71 @@ public class MVCController {
         model.addAttribute("errorMessage", errorMessage);
 
         return "cart";
+    }
+    
+    @RequestMapping(value = "/checkout", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewCheckout(@RequestParam(name = "action", required = false) String action,
+            @RequestParam(name = "itemName", required = false) String itemName,
+            @RequestParam(name = "itemUUID", required = false) String itemUuid,
+            Model model,
+            HttpSession session) {
+
+        // get sessionUser from session
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        // used to set tab selected
+        model.addAttribute("selectedPage", "cart");
+
+        String message = "";
+        String errorMessage = "";
+
+        if (action == null) {
+            // do nothing but show page
+        } else if ("addItemToCart".equals(action)) {
+            ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
+            if (shoppingItem == null) {
+                message = "cannot add unknown " + itemName + " to cart";
+            } else {
+                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
+                shoppingCart.addItemToCart(shoppingItem);
+            }
+        } else if ("removeItemFromCart".equals(action)) {
+            message = "removed " + itemName + " from cart";
+            shoppingCart.removeItemFromCart(itemUuid);
+        } else if ("reduceItemFromCart".equals(action)) {
+            message = "reducing  "+itemName + " in cart";
+            shoppingCart.reduceItemFromCart(itemUuid);
+        } else if ("increaseItemFromCart".equals(action)) {
+            message = "increasing "+itemName + " in cart";
+            shoppingCart.increaseItemFromCart(itemUuid);
+        } else {
+            message = "unknown action=" + action;
+        }
+
+        List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
+
+        List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
+
+        Double shoppingcartTotal = shoppingCart.getTotal();
+        
+        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
+        
+        List<Image> image = shoppingDescription.getImages();
+
+        // populate model with values
+        model.addAttribute("images", image);
+
+        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
+
+        // populate model with values
+        model.addAttribute("availableItems", availableItems);
+        model.addAttribute("shoppingCartItems", shoppingCartItems);
+        model.addAttribute("shoppingcartTotal", shoppingcartTotal);
+        model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
+
+        return "checkout";
     }
     
     @RequestMapping(value = "/about", method = {RequestMethod.GET, RequestMethod.POST})
