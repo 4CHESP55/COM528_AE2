@@ -48,6 +48,7 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./home">Home</a></li>
+                            <li <% if ("shop".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./shop">Shop</a></li> 
                             <li <% if ("cart".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./cart">Cart</a></li> 
                             <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">About</a></li> 
                             <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Contact</a></li>                          
@@ -61,48 +62,53 @@
                                 </li>
                             </c:if>
                         </ul>
-                                
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span> Cart <span class="caret"></span></a>
-                                        <ul class="dropdown-menu dropdown-cart" role="menu">
-                                            <c:forEach var="item" items="${shoppingCartItems}">
-                                            <li>
-                                                <span class="item">
-                                                    <span class="item-left">
-                                                        <img style="width: 50px"
-                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                             <c:choose>
-                                                 <c:when test="${item.id == desc.itemId}">
-                                                     <c:forEach var="img" items="${images}">
-                                                         <c:choose>
-                                                             <c:when test="${desc.image == img.id}">
-                                                                 src="data:image/jpeg;base64,${img.base64image}"
-                                                             </c:when>
-                                                         </c:choose>
-                                                     </c:forEach>
-                                                 </c:when>   
-                                             </c:choose>
-                                         </c:forEach>
-                                    />
-                                                        <span class="item-info">
-                                                            <span class="item-name">${item.name}</span>
-                                                            <span class="item-price">£${item.price}</span>
-                                                            <span class="item-quantity">Quantity: ${item.quantity}</span>
-                                                        </span>
+                        <form class="navbar-form navbar-left" action="./shop" method="get">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="search" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-default">Search</button>
+                        </form>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span> Cart <span class="caret"></span></a>
+                                <ul class="dropdown-menu dropdown-cart" role="menu">
+                                    <c:forEach var="item" items="${shoppingCartItems}">
+                                        <li>
+                                            <span class="item">
+                                                <span class="item-left">
+                                                    <img style="width: 50px"
+                                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
+                                                             <c:choose>
+                                                                 <c:when test="${item.id == desc.itemId}">
+                                                                     <c:forEach var="img" items="${images}">
+                                                                         <c:choose>
+                                                                             <c:when test="${desc.image == img.id}">
+                                                                                 src="data:image/jpeg;base64,${img.base64image}"
+                                                                             </c:when>
+                                                                         </c:choose>
+                                                                     </c:forEach>
+                                                                 </c:when>   
+                                                             </c:choose>
+                                                         </c:forEach>
+                                                         />
+                                                    <span class="item-info">
+                                                        <span class="item-name">${item.name}</span>
+                                                        <span class="item-price">£${item.price}</span>
+                                                        <span class="item-quantity">Quantity: ${item.quantity}</span>
                                                     </span>
                                                 </span>
-                                            </li>
-                                            </c:forEach>
-                                            <li class="divider"></li>
-                                            <li><a class="text-center">Total: £${shoppingcartTotal}</a></li>
-                                            <li class="divider"></li>
-                                            <li><a class="view-button" href="./cart">View Cart</a></li>
-                                            <li><a class="checkout-button" href="./checkout">Checkout</a></li>
-                                        </ul>
-                                    </li>
+                                            </span>
+                                        </li>
+                                    </c:forEach>
+                                    <li class="divider"></li>
+                                    <li><a class="text-center">Total: £${shoppingcartTotal}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a class="view-button" href="./cart">View Cart</a></li>
+                                    <li><a class="checkout-button" href="./checkout">Checkout</a></li>
                                 </ul>
-                                
+                            </li>
+                        </ul>
+
                         <ul class="nav navbar-nav navbar-right">
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">

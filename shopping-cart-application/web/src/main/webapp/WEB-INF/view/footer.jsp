@@ -22,6 +22,7 @@
         <script src="./resources/js/jquery.min.js"></script>
         <script src="./resources/js/bootstrap.min.js"></script>
         <script src="./resources/js/previewimg.js"></script>
+        <script src="./resources/js/addparam.js"></script>
 
     </body>
 </html>

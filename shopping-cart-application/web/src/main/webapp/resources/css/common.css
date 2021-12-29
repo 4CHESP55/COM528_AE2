@@ -57,7 +57,7 @@ body {
     overflow: hidden;
 }
 #product p.collapsing[aria-expanded="false"] {
-    height: 300px !important;
+    height: 380px !important;
 }
 
 #product a.collapsed:after  {

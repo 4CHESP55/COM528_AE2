@@ -31,6 +31,12 @@ public class ShoppingServiceImpl implements ShoppingService {
         List<ShoppingItem> itemlist = shoppingItemCatalogRepository.findAll();
         return itemlist;
     }
+    
+    @Override
+    public List<ShoppingItem> getSearchedItems(String search) {
+        List<ShoppingItem> itemlist = shoppingItemCatalogRepository.searchAll(search);
+        return itemlist;
+    }
 
     @Override
     public boolean purchaseItems(ShoppingCart shoppingCart) {

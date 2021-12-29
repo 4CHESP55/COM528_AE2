@@ -16,6 +16,9 @@ public interface ShoppingItemCatalogRepository  extends JpaRepository<ShoppingIt
     @Query("select i from ShoppingItem i where name = :name")
     public List<ShoppingItem> getItemByName (@Param ("name")String name);
     
+    @Query("select i from ShoppingItem i where name like %:search%")
+    public List<ShoppingItem> searchAll (@Param ("search")String search);
+    
     @Query("select i from ShoppingItem i where id = :id")
     public List<ShoppingItem> getItemById (@Param ("id")Long id);
     

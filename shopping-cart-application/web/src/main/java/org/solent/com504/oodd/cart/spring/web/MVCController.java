@@ -71,7 +71,7 @@ public class MVCController {
     }
 
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewShop(@RequestParam(name = "action", required = false) String action,
+    public String viewHome(@RequestParam(name = "action", required = false) String action,
             @RequestParam(name = "itemId", required = false) Long itemId,
             @RequestParam(name = "itemName", required = false) String itemName,
             @RequestParam(name = "itemUUID", required = false) String itemUuid,
@@ -139,6 +139,89 @@ public class MVCController {
         model.addAttribute("errorMessage", errorMessage);
 
         return "home";
+    }
+    
+    @RequestMapping(value = "/shop", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewShop(@RequestParam(name = "action", required = false) String action,
+            @RequestParam(name = "itemId", required = false) Long itemId,
+            @RequestParam(name = "itemName", required = false) String itemName,
+            @RequestParam(name = "itemUUID", required = false) String itemUuid,
+            @RequestParam(name = "page", required = false) String page,
+            @RequestParam(name = "search", required = false) String search,
+            Model model,
+            HttpSession session) {
+
+        // get sessionUser from session
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        // used to set tab selected
+        model.addAttribute("selectedPage", "shop");
+
+        String message = "";
+        String errorMessage = "";
+
+        int intPage = 0;
+        int recordsPerPage = 2;
+        if(page == null) {
+            intPage = 1;
+        } else {
+            intPage = Integer.parseInt(page);
+        }
+        List<ShoppingItem> allAvailableItems = shoppingService.getAvailableItems();
+        if(search != null){
+            allAvailableItems = shoppingService.getSearchedItems(search);
+        }
+        int noOfRecords = allAvailableItems.size();
+        List<ShoppingItem> availableItemsOnPage = allAvailableItems.subList((intPage-1)*recordsPerPage, ((intPage-1)*recordsPerPage+recordsPerPage > noOfRecords ? noOfRecords : (intPage-1)*recordsPerPage+recordsPerPage));
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+
+
+        if (action == null) {
+            // do nothing but show page
+        } else if ("addItemToCart".equals(action)) {
+            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+            if (shoppingItem == null) {
+                message = "cannot add unknown " + itemName + " to cart";
+            } else {
+                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
+                shoppingCart.addItemToCart(shoppingItem);
+            }
+        } else if ("removeItemFromCart".equals(action)) {
+            message = "removed " + itemName + " from cart";
+            shoppingCart.removeItemFromCart(itemUuid);
+        } else {
+            message = "unknown action=" + action;
+        }
+
+        List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
+        
+        List<ShoppingItemDescription> enabledItems = shoppingDescription.getEnabledItems();
+
+        List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
+        
+        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
+
+        Double shoppingcartTotal = shoppingCart.getTotal();
+        
+        List<Image> image = shoppingDescription.getImages();
+
+        // populate model with values
+        model.addAttribute("images", image);
+
+        // populate model with values
+        model.addAttribute("availableItems", availableItems);
+        model.addAttribute("enabledItems", enabledItems);
+        model.addAttribute("shoppingCartItems", shoppingCartItems);
+        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
+        model.addAttribute("shoppingcartTotal", shoppingcartTotal);
+        model.addAttribute("noOfPages", noOfPages);
+        model.addAttribute("availableItemsOnPage", availableItemsOnPage);
+        model.addAttribute("currentPage", intPage);
+        model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
+
+        return "shop";
     }
     
     @RequestMapping(value = "/product", method = {RequestMethod.GET, RequestMethod.POST})

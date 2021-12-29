@@ -12,19 +12,37 @@
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-    <H1>Login</H1>
     <div style="color:red;">${errorMessage}</div>
     <div style="color:green;">${message}</div>
-
-    <form action="./login" method="post">
-        <input type="hidden" name="action" value="login">
-        <p>Username <input type="text" name="username" ></input></p><BR>
-        <p>Password <input type="password" name="password" ></input></p>
-        <p><button type="submit" >Log In</button></p>
-    </form> 
-    
-    <a href="./register">Create a new account</a>
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+        <div class="panel panel-default" >
+            <div class="panel-heading">
+                <div class="panel-title text-center">Login</div>
+            </div>     
+            <div class="panel-body" >
+                <form action="./login" method="post">
+                    <input type="hidden" name="action" value="login">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="user" type="text" class="form-control" name="username" value="" placeholder="Username">                                        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                        </div>                                                                  
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 controls">
+                            <button type="submit" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-log-in"></i> Log in</button>                          
+                        </div>
+                    </div>
+                </form>     
+            </div>                     
+        </div>
+        <a href="./register">Create a new account</a>
+    </div>
 </main>
-
-
 <jsp:include page="footer.jsp" />

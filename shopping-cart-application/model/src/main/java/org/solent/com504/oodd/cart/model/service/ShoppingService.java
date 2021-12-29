@@ -16,6 +16,8 @@ public interface ShoppingService {
     
         public List<ShoppingItem> getAvailableItems();
         
+        public List<ShoppingItem> getSearchedItems(String search);
+        
         public boolean purchaseItems(ShoppingCart shoppingCart);
         
         public ShoppingItem getNewItemByName(String name);

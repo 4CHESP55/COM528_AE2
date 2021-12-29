@@ -7,10 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%
-// request set in controller
-//request.setAttribute("selectedPage", "home");
-%>
+
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
@@ -23,7 +20,7 @@
                         <h5><span class="glyphicon glyphicon-info-sign"></span> Product Details</h5>
                     </div>
                     <div class="col-xs-6">
-                        <a href="./home" class="btn btn-primary btn-sm btn-block">
+                        <a href="./shop" class="btn btn-primary btn-sm btn-block">
                             <span class="glyphicon glyphicon-share-alt"></span> Continue shopping
                         </a>
                     </div>
@@ -34,14 +31,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <img style="height: 600px; width: 100%; background-color: lightgrey;"
-                        <c:choose>
-                            <c:when test="${itemImage != ''}">
-                                <img style="width: 100%" src="data:image/jpeg;base64,${itemImage}" />
-                            </c:when>
-                            <c:otherwise>
-                                <img style="height: 600px; width: 100%; background-color: lightgrey;" />
-                            </c:otherwise>
-                        </c:choose>
+                         <c:choose>
+                             <c:when test="${itemImage != ''}">
+                                 <img style="width: 100%" src="data:image/jpeg;base64,${itemImage}" />
+                         </c:when>
+                         <c:otherwise>
+                             <img style="height: 600px; width: 100%; background-color: lightgrey;" />
+                         </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="col-md-6">
                     <div class="row">
@@ -60,7 +57,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <form class="form-inline" action="./home" method="get">
+                            <form class="form-inline" action="./shop" method="get">
                                 <table style="margin-left: auto; margin-right: auto;">
                                     <tr><td style="text-align: right">
                                             <div class="form-group">
@@ -93,25 +90,24 @@
                             </form>
                         </div>
                     </div>
-                                            <hr>
+                    <hr>
                     <div class="row">
                         <div class="col-md-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" id="headingOne">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                Description <span class="glyphicon glyphicon-chevron-down pull-right"></span>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            Description <span class="glyphicon glyphicon-chevron-down pull-right"></span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div id="product">
+                                            <p class="collapse" id="collapseExample" aria-expanded="false" style="white-space: pre-wrap">${itemDescription}</p>
+                                            <hr class="rounded">
+                                            <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                             </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
-                                        <div class="panel-body">
-                                            <div id="product">
-                                                <p class="collapse" id="collapseExample" aria-expanded="false" style="white-space: pre-wrap">${itemDescription}</p>
-                                                <hr class="rounded">
-                                                <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                </a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
