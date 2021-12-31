@@ -82,8 +82,34 @@
                 </div>
             </div>
         </div>
-
-        <div class="collapse in" id="address">       
+                        
+        <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
+            <div class="collapse in" id="anonymous">       
+                <div class="col-md-6">
+                    <p>Not currently logged in</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-success btn-block" type="button" data-toggle="collapse" data-target="#address, #anonymous" data-parent="#checkout_form">
+                            Continue as guest
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="./login?page=checkout" class="btn btn-success btn-block">
+                            Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+        <c:choose>
+            <c:when test="${sessionUser.userRole =='ANONYMOUS'}">
+                <div class="collapse" id="address">
+            </c:when>
+            <c:otherwise>
+                <div class="collapse in" id="address">
+            </c:otherwise>
+        </c:choose>
             <div class="col-md-6">
                 <!--SHIPPING METHOD-->
                 <div class="panel panel-info">
@@ -101,37 +127,48 @@
                         <div class="form-group">
                             <div class="col-md-6 col-xs-12">
                                 <strong>First Name:</strong>
-                                <input type="text" name="first_name" class="form-control" value="" />
+                                <input type="text" name="first_name" class="form-control" value="${checkoutUser.firstName}" />
                             </div>
                             <div class="span1"></div>
                             <div class="col-md-6 col-xs-12">
                                 <strong>Last Name:</strong>
-                                <input type="text" name="last_name" class="form-control" value="" />
+                                <input type="text" name="last_name" class="form-control" value="${checkoutUser.secondName}" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-xs-12">
-                                <strong>Address:</strong>
-                                <input type="text" name="address" class="form-control" value="" />
+                                <strong>House Number:</strong>
+                                <input type="text" name="house_number" class="form-control" value="${checkoutUser.address.houseNumber}" />
                             </div>
                             <div class="span1"></div>
+                            <div class="col-md-6 col-xs-12">
+                                <strong>Address Line 1:</strong>
+                                <input type="text" name="address_line_1" class="form-control" value="${checkoutUser.address.addressLine1}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-xs-12 pull-right">
+                                <strong>Address Line 2:</strong>
+                                <input type="text" name="address_line_2" class="form-control" value="${checkoutUser.address.addressLine2}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-md-6 col-xs-12">
                                 <strong>City:</strong>
-                                <input type="text" name="city" class="form-control" value="" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-xs-12">
-                                <strong>State:</strong>
-                                <input type="text" name="state" class="form-control" value="" />
+                                <input type="text" name="city" class="form-control" value="${checkoutUser.address.city}" />
                             </div>
                             <div class="span1"></div>
                             <div class="col-md-6 col-xs-12">
-                                <strong>Zip / Postal Code:</strong>
-                                <input type="text" name="zip_code" class="form-control" value="" />
+                                <strong>County:</strong>
+                                <input type="text" name="county" class="form-control" value="${checkoutUser.address.county}" />
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="col-md-6 col-xs-12">
+                                <strong>Postal Code:</strong>
+                                <input type="text" name="postal_code" class="form-control" value="${checkoutUser.address.postcode}" />
+                            </div>
+                            <div class="span1"></div>
                             <div class="col-md-6 col-xs-12">
                                 <strong>Country:</strong>
                                 <select name="country" class="form-control" id="country">
@@ -404,12 +441,12 @@
                         <div class="form-group">
                             <div class="col-md-6 col-xs-12">
                                 <strong>Phone Number:</strong>
-                                <input type="text" name="phone_number" class="form-control" value="" />
+                                <input type="text" name="phone_number" class="form-control" value="${checkoutUser.address.telephone}" />
                             </div>
                             <div class="span1"></div>
                             <div class="col-md-6 col-xs-12">
-                                <strong>Email Address:</strong>
-                                <input type="text" name="email_address" class="form-control" value="" />
+                                <strong>Mobile Number:</strong>
+                                <input type="text" name="mobile_number" class="form-control" value="${checkoutUser.address.mobile}" />
                             </div>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.solent.com504.oodd.cart.dao.impl.ImageDbRepository;
+import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.Image;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
@@ -52,6 +53,9 @@ public class MVCController {
     
     @Autowired
     ImageDbRepository imageDbRepository;
+    
+    @Autowired
+    UserRepository userRepository;
 
     private User getSessionUser(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -505,27 +509,37 @@ public class MVCController {
         String message = "";
         String errorMessage = "";
 
-        if (action == null) {
+        User checkoutUser = null;
+        if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
+            List<User> userList = userRepository.findByUsername(sessionUser.getUsername());
+            checkoutUser = userList.get(0);
+        }
+        if (null == action) {
             // do nothing but show page
-        } else if ("addItemToCart".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
-            if (shoppingItem == null) {
-                message = "cannot add unknown " + itemName + " to cart";
-            } else {
-                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                shoppingCart.addItemToCart(shoppingItem);
-            }
-        } else if ("removeItemFromCart".equals(action)) {
-            message = "removed " + itemName + " from cart";
-            shoppingCart.removeItemFromCart(itemUuid);
-        } else if ("reduceItemFromCart".equals(action)) {
-            message = "reducing  "+itemName + " in cart";
-            shoppingCart.reduceItemFromCart(itemUuid);
-        } else if ("increaseItemFromCart".equals(action)) {
-            message = "increasing "+itemName + " in cart";
-            shoppingCart.increaseItemFromCart(itemUuid);
-        } else {
-            message = "unknown action=" + action;
+        } else switch (action) {
+            case "addItemToCart":
+                ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
+                if (shoppingItem == null) {
+                    message = "cannot add unknown " + itemName + " to cart";
+                } else {
+                    message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
+                    shoppingCart.addItemToCart(shoppingItem);
+                }   break;
+            case "removeItemFromCart":
+                message = "removed " + itemName + " from cart";
+                shoppingCart.removeItemFromCart(itemUuid);
+                break;
+            case "reduceItemFromCart":
+                message = "reducing  "+itemName + " in cart";
+                shoppingCart.reduceItemFromCart(itemUuid);
+                break;
+            case "increaseItemFromCart":
+                message = "increasing "+itemName + " in cart";
+                shoppingCart.increaseItemFromCart(itemUuid);
+                break;
+            default:
+                message = "unknown action=" + action;
+                break;
         }
 
         List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
@@ -540,6 +554,7 @@ public class MVCController {
 
         // populate model with values
         model.addAttribute("images", image);
+        model.addAttribute("checkoutUser", checkoutUser);
 
         model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
 

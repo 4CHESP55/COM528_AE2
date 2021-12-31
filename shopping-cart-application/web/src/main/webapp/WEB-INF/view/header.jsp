@@ -52,15 +52,6 @@
                             <li <% if ("cart".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./cart">Cart</a></li> 
                             <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">About</a></li> 
                             <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Contact</a></li>                          
-                                <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
-                                <li class="dropdown" >
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Admin <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="./users">Manage Users</a></li>
-                                        <li><a href="./catalog">Manage Catalogue</a></li>
-                                    </ul>
-                                </li>
-                            </c:if>
                         </ul>
                         <form class="navbar-form navbar-left" action="./shop" method="get">
                             <div class="form-group">
@@ -113,19 +104,40 @@
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
                                 <li><a href="./login">Login or create a new Account</a></li>
-                                </c:if>
-                                <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
-                                <form id="logoutForm" method="POST" action="./logout">
-                                </form>
-                                <form id="profile" method="GET" action="./viewModifyUser">
-                                    <input type="hidden" name="username" value="${sessionUser.username}"/>
-                                </form>
-                                <p class="text-muted"> Welcome 
-                                    <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}"> Admin</c:if>                                   
-                                    ${sessionUser.username}&nbsp;&nbsp;
-                                    <a onclick="document.forms['logoutForm'].submit()">Logout</a><BR>
-                                    <a onclick="document.forms['profile'].submit()">User Profile</a></p>
-                                </c:if>
+                            </c:if>
+                            <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
+                                <li class="dropdown" >
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <c:choose>
+                                        <c:when test="${sessionUser.userRole =='ADMINISTRATOR'}">
+                                            Admin 
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${sessionUser.username}
+                                        </c:otherwise>
+                                        </c:choose>
+                                            <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
+                                        <li><a href="./users">Manage Users</a></li>
+                                        <li><a href="./catalog">Manage Catalogue</a></li>
+                                        <li><a href="./orders">Manage Orders</a></li>
+                                        <hr>
+                                        </c:if>
+                                        <form id="logoutForm" method="POST" action="./logout">
+                                        </form>
+                                        <form id="profile" method="GET" action="./viewModifyUser">
+                                            <input type="hidden" name="username" value="${sessionUser.username}"/>
+                                        </form>
+                                        <form id="orders" method="GET" action="./orders">
+                                            <input type="hidden" name="username" value="${sessionUser.username}"/>
+                                        </form>
+                                        <li><a onclick="document.forms['profile'].submit()">My Profile</a></li>
+                                        <li><a onclick="document.forms['orders'].submit()">My Orders</a></li>
+                                        <li><a onclick="document.forms['logoutForm'].submit()">Logout</a></li>
+                                    </ul>
+                                </li>
+                                </c:if>  
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->

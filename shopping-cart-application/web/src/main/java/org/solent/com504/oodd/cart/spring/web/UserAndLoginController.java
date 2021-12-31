@@ -66,7 +66,7 @@ public class UserAndLoginController {
             errorMessage = "user " + sessionUser.getUsername() + " already logged in";
             LOG.warn(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
-            return "home";
+            return "redirect:home";
         }
 
         model.addAttribute("message", message);
@@ -74,8 +74,9 @@ public class UserAndLoginController {
         // used to set tab selected
         model.addAttribute("selectedPage", "home");
 
-        return "login";
 
+        return "login";
+        
     }
 
     @RequestMapping(value = "/login", method = {RequestMethod.POST})
@@ -99,7 +100,7 @@ public class UserAndLoginController {
             errorMessage = "user " + sessionUser.getUsername() + " already logged in";
             LOG.warn(errorMessage);
             model.addAttribute("errorMessage", errorMessage);
-            return "home";
+            return "redirect:home";
         };
 
         if (username == null || username.trim().isEmpty()) {
@@ -147,14 +148,14 @@ public class UserAndLoginController {
             model.addAttribute("errorMessage", errorMessage);
             // used to set tab selected
             model.addAttribute("selectedPage", "home");
-            return "home";
+            return "redirect:home";
         } else {
             model.addAttribute("errorMessage", "unknown action requested:" + action);
             LOG.error("login page unknown action requested:" + action);
             model.addAttribute("errorMessage", errorMessage);
             // used to set tab selected
             model.addAttribute("selectedPage", "home");
-            return "home";
+            return "redirect:home";
         }
     }
 
