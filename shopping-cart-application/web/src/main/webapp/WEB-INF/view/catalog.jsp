@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-    <c:forEach var="item" items="${availableItems}">
+    <c:forEach var="item" items="${allItems}">
         <div class="panel panel-default">
 
             <div class="panel-heading" id="heading${item.id}">
@@ -106,19 +106,12 @@
                                 Price: ${item.price}
                             </div>
                             <div class="col-md-3">
-                                Description: 
-                                <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                    <c:choose>
-                                        <c:when test="${item.id == desc.itemId}">
-                                            ${fn:substring(desc.description, 0, 30)}...   
-                                        </c:when>
-                                    </c:choose>
-                                </c:forEach>       
+                                Description: ${fn:substring(item.description, 0, 30)}...         
                             </div>
                             <div class="col-md-4">
                                 <span class="pull-right">
                                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse${item.id}" aria-expanded="false" aria-controls="collapse${item.id}">
-                                        Quick Edit
+                                        Edit
                                     </button>
                                     <input type="hidden" name="itemName" value="${item.name}">
                                     <button class="btn btn-danger" type="submit" name="action" value="removeItemFromCatalog">
@@ -162,20 +155,12 @@
                                 <div class="form-group">
                                     <label>Image</label>
                                     <img style="height: 180px; width: 100%; background-color: lightgrey;"  
-                                         <c:set var="imageHeight" scope="request" value="180px"/>
-                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                             <c:choose>
-                                                 <c:when test="${item.id == desc.itemId}">
-                                                     <c:forEach var="img" items="${images}">
                                                          <c:choose>
-                                                             <c:when test="${desc.image == img.id}">
-                                                                 src="data:image/jpeg;base64,${img.base64image}"
+                                                             <c:when test="${item.image.base64image != null}">
+                                                                 src="data:image/jpeg;base64,${item.image.base64image}"
                                                              </c:when>
                                                          </c:choose>
-                                                     </c:forEach>
-                                                 </c:when>   
-                                             </c:choose>
-                                         </c:forEach>
+                                                     
                                          />
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#flipFlop${item.id}">
                                         Edit image
@@ -185,7 +170,7 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="itemDesc">Description</label>
-                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" maxlength="5000" ><c:forEach var="desc" items="${shoppingItemDescriptions}"><c:choose><c:when test="${item.id == desc.itemId}">${desc.description}</c:when></c:choose></c:forEach></textarea>
+                                    <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" maxlength="5000" >${item.description}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -193,11 +178,25 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="btn btn-success">
-                                                    <input type="radio" name="enabled" id="optionsRadios" value="true" checked>
+                                                    <c:choose>
+                                                        <c:when test="${item.enabled == true}">
+                                                            <input type="radio" name="enabled" id="optionsRadios" value="true" checked>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="radio" name="enabled" id="optionsRadios" value="true">
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     Enabled
                                                 </label>
                                                 <label class="btn btn-secondary">
-                                                    <input type="radio" name="enabled" id="optionsRadios" value="false">
+                                                    <c:choose>
+                                                        <c:when test="${item.enabled == false}">
+                                                            <input type="radio" name="enabled" id="optionsRadios" value="false" checked>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="radio" name="enabled" id="optionsRadios" value="false">
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     Disabled
                                                 </label>
                                                 <input type="hidden" name="itemId" value="${item.id}">

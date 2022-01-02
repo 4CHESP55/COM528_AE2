@@ -31,7 +31,7 @@ public class ShoppingCartImpl implements ShoppingCart {
     }
 
     @Override
-    public void addItemToCart(ShoppingItem shoppingItem) {
+    public void addItemToCart(ShoppingItem shoppingItem, Integer buy_quantity) {
         // itemMap.put(shoppingItem.getUuid(), shoppingItem);
         
         // ANSWER
@@ -40,13 +40,13 @@ public class ShoppingCartImpl implements ShoppingCart {
             ShoppingItem shoppingCartItem = itemMap.get(itemUUID);
             if (shoppingCartItem.getId().equals(shoppingItem.getId())){
                 Integer q = shoppingCartItem.getQuantity();
-                shoppingCartItem.setQuantity(q+1);
+                shoppingCartItem.setQuantity(q+buy_quantity);
                 itemExists = true;
                 break;
             }
         }
         if (!itemExists){
-            shoppingItem.setQuantity(1);
+            shoppingItem.setQuantity(buy_quantity);
             itemMap.put(shoppingItem.getUuid(), shoppingItem);
         }
     }

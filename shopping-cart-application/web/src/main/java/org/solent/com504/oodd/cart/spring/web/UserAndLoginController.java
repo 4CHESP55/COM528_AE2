@@ -258,7 +258,7 @@ public class UserAndLoginController {
 
         if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
             errorMessage = "you must be an administrator to access users information";
-            return "home";
+            return "redirect:home";
         }
 
         List<User> userList = userRepository.findAll();

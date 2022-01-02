@@ -19,26 +19,15 @@
 
     <div class="row">
         <c:forEach var="item" items="${availableItemsOnPage}">
-            <c:forEach var="enabled" items="${enabledItems}">
-                <c:choose>
-                    <c:when test="${item.id == enabled.itemId}">
                         <div class="col-12 col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading" style="padding: 0">
                                     <img style="height: 200px; width: 100%; background-color: lightgrey;"
-                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
                                              <c:choose>
-                                                 <c:when test="${item.id == desc.itemId}">
-                                                     <c:forEach var="img" items="${images}">
-                                                         <c:choose>
-                                                             <c:when test="${desc.image == img.id}">
-                                                                 src="data:image/jpeg;base64,${img.base64image}"
+                                                             <c:when test="${item.image.base64image != null}">
+                                                                 src="data:image/jpeg;base64,${item.image.base64image}"
                                                              </c:when>
-                                                         </c:choose>
-                                                     </c:forEach>
-                                                 </c:when>   
                                              </c:choose>
-                                         </c:forEach>
                                     />
                                 </div>
                                 <div class="panel-body">
@@ -49,13 +38,7 @@
                                             <input type="submit" style="color:#00f;border:0px #000 solid;background-color:#fff;" value="${item.name}">
                                         </form>
                                     </h4>
-                                    <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                        <c:choose>
-                                            <c:when test="${item.id == desc.itemId}">
-                                                <p class="card-text">${fn:substring(desc.description, 0, 30)}...</p>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
+                                    <p class="card-text">${fn:substring(item.description, 0, 30)}...</p>
                                 </div>
                                 <div class="panel-footer">
                                     <div class="row text-center">
@@ -82,9 +65,6 @@
                                 </div>
                             </div>
                         </div>
-                    </c:when>
-                </c:choose>
-            </c:forEach>
         </c:forEach>
     </div>
     

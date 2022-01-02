@@ -68,19 +68,11 @@
                                             <span class="item">
                                                 <span class="item-left">
                                                     <img style="width: 50px"
-                                                         <c:forEach var="desc" items="${shoppingItemDescriptions}">
-                                                             <c:choose>
-                                                                 <c:when test="${item.id == desc.itemId}">
-                                                                     <c:forEach var="img" items="${images}">
                                                                          <c:choose>
-                                                                             <c:when test="${desc.image == img.id}">
-                                                                                 src="data:image/jpeg;base64,${img.base64image}"
+                                                                             <c:when test="${item.image.base64image != null}">
+                                                                                 src="data:image/jpeg;base64,${item.image.base64image}"
                                                                              </c:when>
                                                                          </c:choose>
-                                                                     </c:forEach>
-                                                                 </c:when>   
-                                                             </c:choose>
-                                                         </c:forEach>
                                                          />
                                                     <span class="item-info">
                                                         <span class="item-name">${item.name}</span>

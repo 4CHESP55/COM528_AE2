@@ -46,7 +46,7 @@ public class ShoppingCartTest {
         ShoppingItem shoppingItem = new ShoppingItem();
         shoppingItem.setName("fred");
         
-        shoppingCart.addItemToCart(shoppingItem);
+        shoppingCart.addItemToCart(shoppingItem, 1);
         
         assertEquals(1, shoppingCart.getShoppingCartItems().size() );
 

@@ -16,7 +16,7 @@ public interface ShoppingCart {
 
     public List<ShoppingItem> getShoppingCartItems();
     
-    public void addItemToCart(ShoppingItem shoppingItem);
+    public void addItemToCart(ShoppingItem shoppingItem, Integer buy_quantity);
     
     public void removeItemFromCart(String itemUuid);
     

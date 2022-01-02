@@ -4,7 +4,8 @@
  */
 package org.solent.com504.oodd.cart.model.dto;
 
-import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,26 +15,25 @@ import javax.persistence.Lob;
  *
  * @author Admin
  */
-@Entity
+@Embeddable
 public class Image {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
 
     @Lob
-    byte[] content;
+    @Column(columnDefinition="BLOB")
+    byte[] content=null;
 
-    String name;
+    String title=null;
     
     @Lob
-    String base64image;
+    @Column(columnDefinition="CLOB")
+    String base64image=null;
     
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
     
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
     
     public void setContent(byte[] content) {
@@ -44,14 +44,7 @@ public class Image {
         return content;
     }
     
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public Long getId(){
-        return id;
-    }
-    
+   
     public void setBase64image(String base64Encoded) {
         this.base64image = base64Encoded;
     }

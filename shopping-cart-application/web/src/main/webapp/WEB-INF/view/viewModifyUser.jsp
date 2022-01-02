@@ -13,13 +13,150 @@
 <!-- Begin page content -->
 <main role="main" class="container">
 
+    <div class="tabs-left"> 
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#account-details" aria-controls="account-details" role="tab" data-toggle="tab">Account Details</a></li>
+            <li role="presentation"><a href="#address" aria-controls="address" role="tab" data-toggle="tab">Address</a></li>
+            <li role="presentation"><a href="#payment-method" aria-controls="payment-method" role="tab" data-toggle="tab">Payment Method</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="account-details">
+                <div class="table-responsive">
+                    <div class="panel panel-default" style="border-radius: 0px 4px 4px 4px;">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form class="form" action="./viewModifyUser" method="POST">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><h1>Account details</h1></div>
+
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label for="userId">User ID</label>
+                                                    <input type="text" class="form-control" name="userId" id="userId" value="${modifyUser.id}" disabled>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="userName">Username</label>
+                                                    <input type="text" class="form-control" name="userName" id="userName" value="${modifyUser.username}" disabled>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="firstName">First Name</label>
+                                                    <input type="text" class="form-control" name="firstName" id="firstName" value="${modifyUser.firstName}" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="secondName">Second Name</label>
+                                                    <input type="text" class="form-control" name="secondName" id="secondName" value="${modifyUser.secondName}" >
+                                                </div>
+
+                                            </div>
+                                            <div class="panel-heading"><h2>User Status and role</h2></div>
+                                            <div class="panel-body">
+                                                <c:if test="${sessionUser.userRole !='ADMINISTRATOR'}">
+                                                    <div class="form-group">
+                                                        <label for="userRole">Role</label>
+                                                        <input type="text" class="form-control" name="userRole" id="userRole" value="${modifyUser.userRole}" disabled>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userEnabled">Enabled</label>
+                                                        <input type="text" class="form-control" name="userEnabled" id="userEnabled" value="<c:if test="${modifyUser.enabled}">ENABLED</c:if><c:if test="${!modifyUser.enabled}">DISABLED</c:if>" disabled>
+                                                        </div>
+                                                </c:if>
+
+                                                <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
+                                                    <div class="form-group">
+                                                        <label for="userRole">Role</label>
+                                                        <select class="form-control" name="userRole" >
+                                                            <c:forEach var="value" items="${UserRole.values()}">
+                                                                <option value="${value}" <c:if test="${modifyUser.userRole == value}"> selected  </c:if>>${value}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userEnabled">Enabled</label>
+                                                        <select class="form-control" name="userEnabled" >
+                                                            <option value="true" <c:if test="${modifyUser.enabled}"> selected  </c:if> >ENABLED</option>
+                                                            <option value="false" <c:if test="${!modifyUser.enabled}"> selected  </c:if> >DISABLED</option>
+                                                            </select>
+                                                        </div>
+
+                                                </c:if>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <input type="hidden" name="username" value="${modifyUser.username}"/>
+                                                <button class="btn btn-primary" type="submit" >Update User ${modifyUser.username}</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <form class="form" action="./viewModifyUser" method="post">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><h2>Update Password</h2></div>
+
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label for="password">Password</label>
+                                                    <input class="form-control" type="password" id="password" name="password" ></input>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password2">Re Enter Password</label>
+                                                    <input class="form-control" type="password" id="password2" name="password2" ></input>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <input type="hidden" name="username" value="${modifyUser.username}"/>
+                                                <input type="hidden" name="action" value="updatePassword"/>
+                                                <button class="btn btn-primary" type="submit" >Update ${modifyUser.username} Password</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="address">
+                <div class="table-responsive">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Address details</div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                        <div class="panel-footer">
+                            update
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="payment-method">
+                <div class="table-responsive">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Payment details</div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                        <div class="panel-footer">
+                            update
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div>
         <H1>User Details ${modifyUser.username} </H1>
         <!-- print error message if there is one -->
         <div style="color:red;">${errorMessage}</div>
         <div style="color:green;">${message}</div>
 
-        <form action="./viewModifyUser" method="POST">
+        <form class="form" action="./viewModifyUser" method="POST">
             <table class="table">
                 <thead>
                 </thead>
@@ -147,8 +284,8 @@
             </form> 
         </c:if> 
 
-        </div>
+    </div>
 
-    </main>
+</main>
 
 <jsp:include page="footer.jsp" />

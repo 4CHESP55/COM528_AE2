@@ -5,8 +5,11 @@
  */
 package org.solent.com504.oodd.cart.model.service;
 
+import java.io.IOException;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import java.util.List;
+import org.solent.com504.oodd.cart.model.dto.Image;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -15,6 +18,10 @@ import java.util.List;
 public interface ShoppingService {
     
         public List<ShoppingItem> getAvailableItems();
+        
+        public List<ShoppingItem> getAllItems();
+        
+        public Image saveImage(MultipartFile file) throws IOException;
         
         public List<ShoppingItem> getSearchedItems(String search);
         
@@ -28,6 +35,4 @@ public interface ShoppingService {
         
         public void addItemToCatalog(ShoppingItem shoppingItem);
         
-        public void updateItemById(ShoppingItem shoppingItem);
-
 }

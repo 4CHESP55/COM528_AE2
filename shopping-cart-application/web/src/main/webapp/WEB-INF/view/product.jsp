@@ -65,10 +65,10 @@
                                                 <div class="input-group">
                                                     <c:choose>
                                                         <c:when test="${itemQuantity == 0}">
-                                                            <input type="number" class="form-control" id="itemQuantity" name="itemQuantity"  min="1" max="100" disabled>
+                                                            <input type="number" class="form-control" id="buy_quantity" name="buy_quantity"  min="1" max="100" disabled>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <input type="number" class="form-control" id="itemQuantity" name="itemQuantity"  min="1" max="100">
+                                                            <input type="number" class="form-control" id="buy_quantity" name="buy_quantity"  min="1" max="100" value="1">
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>

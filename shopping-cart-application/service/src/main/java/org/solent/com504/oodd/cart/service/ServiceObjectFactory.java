@@ -5,7 +5,6 @@
  */
 package org.solent.com504.oodd.cart.service;
 
-import org.solent.com504.oodd.cart.model.service.ShoppingDescription;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.service.ShoppingService;
 
@@ -16,7 +15,6 @@ import org.solent.com504.oodd.cart.model.service.ShoppingService;
 public class ServiceObjectFactory {
     
     static ShoppingService shoppingService = new ShoppingServiceImpl();
-    static ShoppingDescription shoppingDescription = new ShoppingDescriptionImpl();
     
     // cannot instantiate
     private ServiceObjectFactory(){
@@ -25,10 +23,6 @@ public class ServiceObjectFactory {
     
     public static ShoppingService getShoppingService(){
         return shoppingService;
-    }
-    
-    public static ShoppingDescription getShoppingDescription(){
-        return shoppingDescription;
     }
     
     public static ShoppingCart getNewShoppingCart(){

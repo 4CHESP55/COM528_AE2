@@ -10,15 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.solent.com504.oodd.cart.dao.impl.ImageDbRepository;
+import org.solent.com504.oodd.cart.dao.impl.ShoppingItemCatalogRepository;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
 import org.solent.com504.oodd.cart.model.dto.Image;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
-import org.solent.com504.oodd.cart.model.dto.ShoppingItemDescription;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
-import org.solent.com504.oodd.cart.model.service.ShoppingDescription;
 import org.solent.com504.oodd.cart.model.service.ShoppingService;
 import org.solent.com504.oodd.cart.web.WebObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +47,8 @@ public class MVCController {
     ShoppingCart shoppingCart = null;
     
     @Autowired
-    ShoppingDescription shoppingDescription = null;
-    
-    @Autowired
-    ImageDbRepository imageDbRepository;
-    
+    ShoppingItemCatalogRepository shoppingItemCatalogRepository;
+           
     @Autowired
     UserRepository userRepository;
 
@@ -91,8 +86,12 @@ public class MVCController {
 
         String message = "";
         String errorMessage = "";
+        
+        int final_buy_quantity = 1;
 
-        // note that the shopping cart is is stored in the sessionUser's session
+        if (null == action) {
+            // do nothing but show page
+        } else // note that the shopping cart is is stored in the sessionUser's session
         // so there is one cart per sessionUser
 //        ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 //        if (shoppingCart == null) synchronized (this) {
@@ -101,43 +100,33 @@ public class MVCController {
 //                session.setAttribute("shoppingCart", shoppingCart);
 //            }
 //        }
-        if (action == null) {
-            // do nothing but show page
-        } else if ("addItemToCart".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
-            if (shoppingItem == null) {
-                message = "cannot add unknown " + itemName + " to cart";
-            } else {
-                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                shoppingCart.addItemToCart(shoppingItem);
-            }
-        } else if ("removeItemFromCart".equals(action)) {
-            message = "removed " + itemName + " from cart";
-            shoppingCart.removeItemFromCart(itemUuid);
-        } else {
-            message = "unknown action=" + action;
+        switch (action) {
+            case "addItemToCart":
+                ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+                if (shoppingItem == null) {
+                    message = "cannot add unknown " + itemName + " to cart";
+                } else {
+                    message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
+                    shoppingCart.addItemToCart(shoppingItem, final_buy_quantity);
+                }   break;
+            case "removeItemFromCart":
+                message = "removed " + itemName + " from cart";
+                shoppingCart.removeItemFromCart(itemUuid);
+                break;
+            default:
+                message = "unknown action=" + action;
+                break;
         }
 
         List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
-        
-        List<ShoppingItemDescription> enabledItems = shoppingDescription.getEnabledItems();
 
         List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
         
-        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
-
         Double shoppingcartTotal = shoppingCart.getTotal();
-        
-        List<Image> image = shoppingDescription.getImages();
-
-        // populate model with values
-        model.addAttribute("images", image);
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);
-        model.addAttribute("enabledItems", enabledItems);
         model.addAttribute("shoppingCartItems", shoppingCartItems);
-        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
         model.addAttribute("shoppingcartTotal", shoppingcartTotal);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
@@ -150,6 +139,7 @@ public class MVCController {
             @RequestParam(name = "itemId", required = false) Long itemId,
             @RequestParam(name = "itemName", required = false) String itemName,
             @RequestParam(name = "itemUUID", required = false) String itemUuid,
+            @RequestParam(name = "buy_quantity", required = false) String buy_quantity,
             @RequestParam(name = "page", required = false) String page,
             @RequestParam(name = "search", required = false) String search,
             Model model,
@@ -164,6 +154,11 @@ public class MVCController {
 
         String message = "";
         String errorMessage = "";
+        
+        int final_buy_quantity = 1;
+        if(buy_quantity != null){
+            final_buy_quantity = Integer.parseInt(buy_quantity);
+        }     
 
         int intPage = 0;
         int recordsPerPage = 2;
@@ -181,43 +176,35 @@ public class MVCController {
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
 
-        if (action == null) {
+        if (null == action) {
             // do nothing but show page
-        } else if ("addItemToCart".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
-            if (shoppingItem == null) {
-                message = "cannot add unknown " + itemName + " to cart";
-            } else {
-                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                shoppingCart.addItemToCart(shoppingItem);
-            }
-        } else if ("removeItemFromCart".equals(action)) {
-            message = "removed " + itemName + " from cart";
-            shoppingCart.removeItemFromCart(itemUuid);
-        } else {
-            message = "unknown action=" + action;
+        } else switch (action) {
+            case "addItemToCart":
+                ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+                if (shoppingItem == null) {
+                    message = "cannot add unknown " + itemName + " to cart";
+                } else {
+                    message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
+                    shoppingCart.addItemToCart(shoppingItem, final_buy_quantity);
+                }   break;
+            case "removeItemFromCart":
+                message = "removed " + itemName + " from cart";
+                shoppingCart.removeItemFromCart(itemUuid);
+                break;
+            default:
+                message = "unknown action=" + action;
+                break;
         }
 
         List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
         
-        List<ShoppingItemDescription> enabledItems = shoppingDescription.getEnabledItems();
-
         List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
         
-        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
-
         Double shoppingcartTotal = shoppingCart.getTotal();
         
-        List<Image> image = shoppingDescription.getImages();
-
-        // populate model with values
-        model.addAttribute("images", image);
-
         // populate model with values
         model.addAttribute("availableItems", availableItems);
-        model.addAttribute("enabledItems", enabledItems);
         model.addAttribute("shoppingCartItems", shoppingCartItems);
-        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
         model.addAttribute("shoppingcartTotal", shoppingcartTotal);
         model.addAttribute("noOfPages", noOfPages);
         model.addAttribute("availableItemsOnPage", availableItemsOnPage);
@@ -247,29 +234,25 @@ public class MVCController {
         String itemDescription = "";
         String itemImage = "";
         Integer itemQuantity = 0;
-        if (action == null) {
+        if (null == action) {
             // do nothing but show page
-        } else if ("viewProduct".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
-            for (ShoppingItemDescription desc : shoppingDescription.getItemDescriptions()) {
-                if (itemId.equals(desc.getItemId())) {
-                    itemDescription = desc.getDescription();
-                    for (Image image : shoppingDescription.getImages()) {
-                        if (Objects.equals(desc.getImage(), image.getId())) {
-                            itemImage = image.getBase64image();
-                        }
+        } else switch (action) {
+            case "viewProduct":
+                ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+                if (shoppingItem == null) {
+                    message = "cannot find item with id:  " + itemId;
+                } else {
+                    itemName = shoppingItem.getName();
+                    itemPrice = shoppingItem.getPrice();
+                    itemQuantity = shoppingItem.getQuantity();
+                    itemDescription = shoppingItem.getDescription();
+                    if (shoppingItem.getImage() != null){
+                        itemImage = shoppingItem.getImage().getBase64image();
                     }
-                }
-            }
-            if (shoppingItem == null) {
-                message = "cannot find item with id:  " + itemId;
-            } else {
-                itemName = shoppingItem.getName();
-                itemPrice = shoppingItem.getPrice();
-                itemQuantity = shoppingItem.getQuantity();
-            }
-        } else {
-            message = "unknown action=" + action;
+                }   break;
+            default:
+                message = "unknown action=" + action;
+                break;
         }
 
         
@@ -300,14 +283,19 @@ public class MVCController {
         // get sessionUser from session
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
-
+        
+        
         // used to set tab selected
         model.addAttribute("selectedPage", "catalog");
 
         String message = "";
         String errorMessage = "";
-        Boolean descFound = false;
 
+        if (!UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
+            errorMessage = "you must be an administrator to access users information";
+            return "redirect:home";
+        }
+        
         // note that the shopping cart is is stored in the sessionUser's session
         // so there is one cart per sessionUser
 //        ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
@@ -324,15 +312,11 @@ public class MVCController {
             Double fianlItemPrice = Double.parseDouble(itemPrice);
             Integer finalItemQuantity = Integer.parseInt(itemQuantity);
             Boolean finalEnabled = Boolean.parseBoolean(enabled);
+            Image image = new Image();
             
             if (shoppingItem == null) {
-                ShoppingItem newItem = new ShoppingItem(itemName, finalItemQuantity, fianlItemPrice);
+                ShoppingItem newItem = new ShoppingItem(itemName, finalItemQuantity, fianlItemPrice, image, itemDesc, finalEnabled);
                 shoppingService.addItemToCatalog(newItem);
-                ShoppingItemDescription newdesc = new ShoppingItemDescription();
-                newdesc.setDescription(itemDesc);
-                newdesc.setItemId(newItem.getId());
-                newdesc.setEnabled(finalEnabled);
-                shoppingDescription.addItemDescription(newdesc);
                 message = "Added " + itemName + " to catalog";
             } else {
                 message = itemName + " already in catalog ";
@@ -352,73 +336,34 @@ public class MVCController {
                 shoppingItem.setName(itemName);
                 shoppingItem.setQuantity(finalItemQuantity);
                 shoppingItem.setPrice(finalItemPrice);
-                shoppingService.updateItemById(shoppingItem);
-                for (ShoppingItemDescription desc : shoppingDescription.getItemDescriptions()) {
-                    if (itemId.equals(desc.getItemId())) {
-                        desc.setDescription(itemDesc);
-                        desc.setEnabled(finalEnabled);
-                        shoppingDescription.updateItemDescription(desc);
-                        descFound = true;
-                    }
-                }
-                if (descFound == false) {
-                    ShoppingItemDescription newdesc = new ShoppingItemDescription();
-                    newdesc.setDescription(itemDesc);
-                    newdesc.setItemId(itemId);
-                    newdesc.setEnabled(finalEnabled);
-                    shoppingDescription.addItemDescription(newdesc);
-                }
+                shoppingItem.setDescription(itemDesc);
+                shoppingItem.setEnabled(finalEnabled);
+                shoppingItemCatalogRepository.save(shoppingItem);
                 message = "Updated item with ID " + itemId;
             }
             
         } else if ("uploadImage".equals(action)) {
-            if (!file.isEmpty()) {
-                byte[] bytes = file.getBytes();
-                Image dbImage = new Image();
-                dbImage.setName(file.getOriginalFilename());
-                dbImage.setContent(bytes);
-                imageDbRepository.save(dbImage);
-                
-                ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
-                if (shoppingItem != null) {
-                    for (ShoppingItemDescription desc: shoppingDescription.getItemDescriptions()){
-                        if (itemId.equals(desc.getItemId())) {
-                            desc.setImage(dbImage.getId());
-                            shoppingDescription.updateItemDescription(desc);
-                            descFound = true;
-                        }
-                    }
-                    if (descFound == false){
-                    ShoppingItemDescription newdesc = new ShoppingItemDescription();
-                    newdesc.setImage(dbImage.getId());
-                    newdesc.setItemId(itemId);
-                    shoppingDescription.addItemDescription(newdesc);
-                    }
-                }
-                
-                message = "Image Uploaded";
-            }
+            ShoppingItem shoppingItem = shoppingService.getNewItemById(itemId);
+            shoppingItem.setImage(shoppingService.saveImage(file));
+            shoppingItemCatalogRepository.save(shoppingItem);
+
+            message = "Image Uploaded";
         } else {
             message = "unknown action=" + action;
         }
 
-        List<ShoppingItem> availableItems = shoppingService.getAvailableItems();
+        List<ShoppingItem> allItems = shoppingService.getAllItems();
 
         List<ShoppingItem> shoppingCartItems = shoppingCart.getShoppingCartItems();
         
-        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
-
         Double shoppingcartTotal = shoppingCart.getTotal();
         
-        List<Image> image = shoppingDescription.getImages();
 
         // populate model with values
-        model.addAttribute("images", image);
 
         // populate model with values
-        model.addAttribute("availableItems", availableItems);
+        model.addAttribute("allItems", allItems);
         model.addAttribute("shoppingCartItems", shoppingCartItems);
-        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
         model.addAttribute("shoppingcartTotal", shoppingcartTotal);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
@@ -446,14 +391,6 @@ public class MVCController {
 
         if (action == null) {
             // do nothing but show page
-        } else if ("addItemToCart".equals(action)) {
-            ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
-            if (shoppingItem == null) {
-                message = "cannot add unknown " + itemName + " to cart";
-            } else {
-                message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                shoppingCart.addItemToCart(shoppingItem);
-            }
         } else if ("removeItemFromCart".equals(action)) {
             message = "removed " + itemName + " from cart";
             shoppingCart.removeItemFromCart(itemUuid);
@@ -473,15 +410,6 @@ public class MVCController {
 
         Double shoppingcartTotal = shoppingCart.getTotal();
         
-        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
-        
-        List<Image> image = shoppingDescription.getImages();
-
-        // populate model with values
-        model.addAttribute("images", image);
-
-        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
-
         // populate model with values
         model.addAttribute("availableItems", availableItems);
         model.addAttribute("shoppingCartItems", shoppingCartItems);
@@ -517,14 +445,6 @@ public class MVCController {
         if (null == action) {
             // do nothing but show page
         } else switch (action) {
-            case "addItemToCart":
-                ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
-                if (shoppingItem == null) {
-                    message = "cannot add unknown " + itemName + " to cart";
-                } else {
-                    message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
-                    shoppingCart.addItemToCart(shoppingItem);
-                }   break;
             case "removeItemFromCart":
                 message = "removed " + itemName + " from cart";
                 shoppingCart.removeItemFromCart(itemUuid);
@@ -548,15 +468,8 @@ public class MVCController {
 
         Double shoppingcartTotal = shoppingCart.getTotal();
         
-        List<ShoppingItemDescription> shoppingItemDescriptions = shoppingDescription.getItemDescriptions();
-        
-        List<Image> image = shoppingDescription.getImages();
 
-        // populate model with values
-        model.addAttribute("images", image);
         model.addAttribute("checkoutUser", checkoutUser);
-
-        model.addAttribute("shoppingItemDescriptions", shoppingItemDescriptions);
 
         // populate model with values
         model.addAttribute("availableItems", availableItems);

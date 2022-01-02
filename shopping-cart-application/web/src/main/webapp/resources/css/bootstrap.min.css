@@ -2827,7 +2827,7 @@ table td[class*=col-], table th[class*=col-] {
 
 .table-responsive {
     min-height: .01%;
-    overflow-x: auto
+    overflow-x: auto;
 }
 
 @media screen and (max-width: 767px) {
@@ -5997,7 +5997,7 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus, a.list-g
 
 .panel > .table-responsive {
     margin-bottom: 0;
-    border: 0
+    border: 0;
 }
 
 .panel-group {
