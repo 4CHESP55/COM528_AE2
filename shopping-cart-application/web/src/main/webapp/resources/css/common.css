@@ -179,3 +179,15 @@ body {
   border-color: #ddd #ddd #ddd transparent;
   *border-left-color: #ffffff;
 }
+
+.d-flex {
+    display:flex;
+}
+.d-flex>div {
+    float: none;
+}
+.col-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+}
