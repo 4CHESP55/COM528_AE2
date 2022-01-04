@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.solent.com504.oodd.cart.dao.impl.UserRepository;
+import org.solent.com504.oodd.bank.model.dto.CreditCard;
+import org.solent.com504.oodd.cart.model.dto.CardType;
 import org.solent.com504.oodd.cart.model.dto.Address;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
@@ -336,6 +338,11 @@ public class UserAndLoginController {
             @RequestParam(value = "mobile", required = false) String mobile,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "password2", required = false) String password2,
+            @RequestParam(value = "cardName", required = false) String cardName,
+            @RequestParam(value = "cardNumber", required = false) String cardNumber,
+            @RequestParam(value = "expiryMonth", required = false) String expiryMonth,
+            @RequestParam(value = "expiryYear", required = false) String expiryYear,
+            @RequestParam(value = "cardType", required = false) String cardType,
             @RequestParam(value = "action", required = false) String action,
             Model model,
             HttpSession session) {
@@ -374,70 +381,90 @@ public class UserAndLoginController {
 
         User modifyUser = userList.get(0);
 
-        // update password if requested
-        if ("updatePassword".equals(action)) {
-            if (password == null || !password.equals(password2) || password.length() < 8) {
-                errorMessage = "you must enter two identical passwords with atleast 8 characters";
-                LOG.warn(errorMessage);
-                model.addAttribute("errorMessage", errorMessage);
-                return "viewModifyUser";
-            } else {
-                modifyUser.setPassword(password);
-                modifyUser = userRepository.save(modifyUser);
-                model.addAttribute("modifyUser", modifyUser);
-                message = "password updated for user :" + modifyUser.getUsername();
-                model.addAttribute("message", message);
-                return "viewModifyUser";
+        if (null != action) {
+            switch (action) {
+                // update password if requested
+                case "updatePassword":
+                    if (password == null || !password.equals(password2) || password.length() < 8) {
+                        errorMessage = "you must enter two identical passwords with atleast 8 characters";
+                        LOG.warn(errorMessage);
+                        model.addAttribute("errorMessage", errorMessage);
+                        return "viewModifyUser";
+                    } else {
+                        modifyUser.setPassword(password);
+                        modifyUser = userRepository.save(modifyUser);
+                        model.addAttribute("modifyUser", modifyUser);
+                        message = "password updated for user :" + modifyUser.getUsername();
+                        model.addAttribute("message", message);
+                        return "viewModifyUser";
+                    }
+                // update user details if requested
+                case "updateDetails":
+                    // only admin can update modifyUser role and enabled
+                    if (UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
+                        try {
+                            UserRole role = UserRole.valueOf(userRole);
+                            modifyUser.setUserRole(role);
+                            if (userEnabled != null && "true".equals(userEnabled)) {
+                                modifyUser.setEnabled(Boolean.TRUE);
+                            } else {
+                                modifyUser.setEnabled(Boolean.FALSE);
+                            }
+                        } catch (Exception ex) {
+                            errorMessage = "cannot parse userRole" + userRole;
+                            LOG.warn(errorMessage);
+                            model.addAttribute("errorMessage", errorMessage);
+                            return ("home");
+                        }
+                    }
+                    if (firstName != null) {
+                        modifyUser.setFirstName(firstName);
+                    }
+                    if (secondName != null) {
+                        modifyUser.setSecondName(secondName);
+                    }
+                    message = "Updated details";
+                    break;
+                // update user address if requested
+                case "updateAddress":
+                    Address address = new Address();
+                    address.setHouseNumber(houseNumber);
+                    address.setAddressLine1(addressLine1);
+                    address.setAddressLine2(addressLine2);
+                    address.setCity(city);
+                    address.setCounty(county);
+                    address.setCountry(country);
+                    address.setPostcode(postcode);
+                    address.setMobile(mobile);
+                    address.setTelephone(telephone);
+                    modifyUser.setAddress(address);
+                    message = "Updated address";
+                    break;
+                // update user payment if requested    
+                case "updatePayment":
+                    CreditCard creditCard = new CreditCard();
+                    creditCard.setName(cardName);
+                    creditCard.setCardnumber(cardNumber);
+                    String cardEndDate = expiryMonth + "/" + expiryYear;
+                    creditCard.setEndDate(cardEndDate);
+                    modifyUser.setCreditCard(creditCard);
+                    CardType type = CardType.valueOf(cardType);
+                    modifyUser.setCardType(type);
+                    message = "Updated payment details";
+                    break;
+                default:
+                    break;
             }
         }
 
-        // else update all other properties
-        // only admin can update modifyUser role aand enabled
-        if (UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
-            try {
-                UserRole role = UserRole.valueOf(userRole);
-                modifyUser.setUserRole(role);
-                if (userEnabled != null && "true".equals(userEnabled)) {
-                    modifyUser.setEnabled(Boolean.TRUE);
-                } else {
-                    modifyUser.setEnabled(Boolean.FALSE);
-                }
-            } catch (Exception ex) {
-                errorMessage = "cannot parse userRole" + userRole;
-                LOG.warn(errorMessage);
-                model.addAttribute("errorMessage", errorMessage);
-                return ("home");
-            }
-        }
-
-        if (firstName != null) {
-            modifyUser.setFirstName(firstName);
-        }
-        if (secondName != null) {
-            modifyUser.setSecondName(secondName);
-        }
-
-        Address address = new Address();
-        address.setHouseNumber(houseNumber);
-        address.setAddressLine1(addressLine1);
-        address.setAddressLine2(addressLine2);
-        address.setCity(city);
-        address.setCounty(county);
-        address.setCountry(country);
-
-        address.setPostcode(postcode);
-        address.setMobile(mobile);
-        address.setTelephone(telephone);
-
-        modifyUser.setAddress(address);
-
+        // Save any changed to the repository
         modifyUser = userRepository.save(modifyUser);
 
         model.addAttribute("modifyUser", modifyUser);
 
         // add message if there are any 
         model.addAttribute("errorMessage", errorMessage);
-        model.addAttribute("message", "User " + modifyUser.getUsername() + " updated successfully");
+        model.addAttribute("message", message);
 
         model.addAttribute("selectedPage", "home");
 

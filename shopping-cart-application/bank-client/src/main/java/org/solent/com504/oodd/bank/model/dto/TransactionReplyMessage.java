@@ -9,7 +9,7 @@ public class TransactionReplyMessage {
 
     private String message;
 
-     private BankTransactionStatus status;
+    private BankTransactionStatus status;
 
     private String fromCardNo;
 

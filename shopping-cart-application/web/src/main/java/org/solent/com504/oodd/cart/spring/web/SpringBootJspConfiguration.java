@@ -4,6 +4,8 @@ import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.service.ShoppingService;
 import org.solent.com504.oodd.cart.service.ServiceObjectFactory;
 import org.solent.com504.oodd.cart.spring.service.ServiceConfiguration;
+import org.solent.com504.oodd.cart.web.PropertiesDao;
+import org.solent.com504.oodd.cart.web.WebObjectFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,5 +31,12 @@ public class SpringBootJspConfiguration {
             proxyMode = ScopedProxyMode.TARGET_CLASS)
     public ShoppingCart getNewShoppingCart() {
         return ServiceObjectFactory.getNewShoppingCart();
+    }
+    
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION,
+            proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public PropertiesDao getPropertiesDao() {
+        return WebObjectFactory.getPropertiesDao();
     }
 }

@@ -8,7 +8,8 @@ package org.solent.com504.oodd.cart.model.dto;
  *
  * @author Admin
  */
-public enum CardTypes {
+public enum OrderStatus {
     
-    Visa, MasterCard, American_Express, Discover
+    PAID, PROCESSING, DISPATCHED
+    
 }

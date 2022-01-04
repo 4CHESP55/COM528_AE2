@@ -114,6 +114,7 @@
                                         <li><a href="./users">Manage Users</a></li>
                                         <li><a href="./catalog">Manage Catalogue</a></li>
                                         <li><a href="./orders">Manage Orders</a></li>
+                                        <li><a href="./paymentSettings">Payment Settings</a></li>
                                         <hr>
                                         </c:if>
                                         <form id="logoutForm" method="POST" action="./logout">

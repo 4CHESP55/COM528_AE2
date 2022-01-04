@@ -5,9 +5,10 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="org.solent.com504.oodd.cart.model.dto.User"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.UserRole"%>
-<%@page import="org.solent.com504.oodd.cart.model.dto.CardTypes"%>
+<%@page import="org.solent.com504.oodd.cart.model.dto.CardType"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.Countries"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.Dates"%>
 <c:set var = "selectedPage" value = "users" scope="request"/>
@@ -100,6 +101,7 @@
                                                 </div>
                                         </c:if>
                                         <input type="hidden" name="username" value="${modifyUser.username}"/>
+                                        <input type="hidden" name="action" value="updateDetails"/>
                                         <button class="btn btn-primary" type="submit" >Save Changes</button>
                                     </form>
                                     <form class="form-horizontal" action="./viewModifyUser" method="post">
@@ -209,7 +211,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="username" value="${modifyUser.username}"/>
-                                        <input type="hidden" name="userRole" value="${modifyUser.userRole}"/>
+                                        <input type="hidden" name="action" value="updateAddress"/>
                                         <button class="btn btn-primary" type="submit" >Save Changes</button>
 
                                     </form>
@@ -227,47 +229,49 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <label for="CreditCardType">Card Type</label>
-                                                <select id="CreditCardType" name="CreditCardType" class="form-control">
-                                                    <c:forEach var="value" items="${CardTypes.values()}">
-                                                            <option value="${value}">${value}</option>
+                                                <select id="CreditCardType" name="cardType" class="form-control">
+                                                    <c:forEach var="value" items="${CardType.values()}">
+                                                            <option value="${value}" <c:if test="${modifyUser.cardType == value}"> selected  </c:if>>${value}</option>
                                                         </c:forEach>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-12 col-xs-12">
-                                                <label for="card_name">Name on Card</label>
-                                                <input type="text" class="form-control" name="card_name" id="card_name" value="" />
+                                                <label for="cardName">Name on Card</label>
+                                                <input type="text" class="form-control" name="cardName" id="cardName" value="${modifyUser.creditCard.name}" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-md-8 col-sm-8 col-xs-12">
-                                                <label for="card_number">Card Number</label>
-                                                <input type="text" class="form-control" name="card_number" id="card_number" value="" />
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label for="cardNumber">Card Number</label>
+                                                <input type="text" class="form-control" name="cardNumber" id="cardNumber" value="${modifyUser.creditCard.cardnumber}" />
                                             </div>
                                             <div class="span1"></div>
-                                            <div class="col-md-4 col-sm-4 col-xs-6">
-                                                <strong>Expiration Date</strong>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label style="width: 100%; text-align: center">Expiration Date</label>
+                                                <c:set var="dateParts" value="${fn:split(modifyUser.creditCard.endDate, '/')}" />
+                                                <div class="span1"></div>
                                                 <div class="col-xs-6">
-                                                    <select class="form-control" name="expiry_month">
+                                                    <select class="form-control" id="expiry_month" name="expiryMonth">
                                                         <option value="">Month</option>
                                                         <c:forEach var="value" items="${Dates.months}">
-                                                            <option value="${value}">${value}</option>
+                                                            <option value="${value}" <c:if test="${dateParts[0] == value}"> selected  </c:if>>${value}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <select class="form-control" name="expiry_year">
+                                                    <select class="form-control" name="expiryYear">
                                                         <option value="">Year</option>
                                                         <c:forEach var="value" items="${Dates.years}">
-                                                            <option value="${value}">${value}</option>
+                                                            <option value="${value}" <c:if test="${dateParts[1] == value}"> selected  </c:if>>20${value}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>  
                                         <input type="hidden" name="username" value="${modifyUser.username}"/>
-                                        <input type="hidden" name="action" value="updateCard"/>
+                                        <input type="hidden" name="action" value="updatePayment"/>
                                         <button class="btn btn-primary" type="submit" >Update Details</button>
                                     </form>
                                 </div>

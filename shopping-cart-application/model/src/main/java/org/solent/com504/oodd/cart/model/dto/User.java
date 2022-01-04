@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.persistence.Embedded;
 import org.solent.com504.oodd.password.PasswordUtils;
+import org.solent.com504.oodd.bank.model.dto.CreditCard;
 
 @Entity
 public class User {
@@ -28,6 +29,10 @@ public class User {
     private UserRole userRole;
 
     private Boolean enabled = true;
+
+    private CreditCard creditCard;
+    
+    private CardType cardType;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +67,23 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Embedded
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+    
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
     }
 
     public String getFirstName() {

@@ -13,6 +13,12 @@
     <packaging>jar</packaging>
     
     <dependencies>
+        
+        <dependency>
+            <groupId>solent.ac.uk.ood.examples</groupId>
+            <artifactId>shoppingCartApplication-bank-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     
         <!-- dependencies for jpa annotations -->
         <dependency>
