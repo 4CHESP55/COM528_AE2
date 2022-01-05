@@ -68,7 +68,7 @@
                                                             <input type="number" class="form-control" id="buy_quantity" name="buy_quantity"  min="1" max="100" disabled>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <input type="number" class="form-control" id="buy_quantity" name="buy_quantity"  min="1" max="100" value="1">
+                                                            <input type="number" class="form-control" id="buy_quantity" name="buy_quantity"  min="1" max="${itemQuantity}" value="1">
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>

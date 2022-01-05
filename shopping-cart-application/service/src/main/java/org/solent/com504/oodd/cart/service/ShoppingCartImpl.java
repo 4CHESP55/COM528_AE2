@@ -59,6 +59,15 @@ public class ShoppingCartImpl implements ShoppingCart {
     }
     
     @Override
+    public void removeAllFromCart() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // ANSWER
+        itemMap.clear();
+        // generate a new hashmap
+        itemMap = new HashMap<>();
+    }
+    
+    @Override
     public void reduceItemFromCart(String itemUuid) {
         ShoppingItem shoppingCartItem = itemMap.get(itemUuid);
         Integer quantity = shoppingCartItem.getQuantity();
