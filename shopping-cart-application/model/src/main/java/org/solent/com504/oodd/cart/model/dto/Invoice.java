@@ -2,10 +2,12 @@ package org.solent.com504.oodd.cart.model.dto;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -21,7 +23,7 @@ public class Invoice {
 
     private Double amountDue = 0.0;
 
-    private List<ShoppingItem> purchasedItems = null;
+    private List<PurchasedItem> purchasedItems = null;
 
     private User purchaser = null;
     
@@ -34,7 +36,7 @@ public class Invoice {
     public Invoice(String invoiceNumber, 
             Date dateOfPurchase, 
             Double amountDue, 
-            List<ShoppingItem> purchasedItems, 
+            List<PurchasedItem> purchasedItems, 
             User purchaser, 
             OrderStatus orderStatus) {
         
@@ -82,16 +84,16 @@ public class Invoice {
         this.amountDue = amountDue;
     }
 
-    @OneToMany
-    public List<ShoppingItem> getPurchasedItems() {
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<PurchasedItem> getPurchasedItems() {
         return purchasedItems;
     }
 
-    public void setPurchasedItems(List<ShoppingItem> purchasedItems) {
+    public void setPurchasedItems(List<PurchasedItem> purchasedItems) {
         this.purchasedItems = purchasedItems;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public User getPurchaser() {
         return purchaser;
     }

@@ -15,4 +15,5 @@ public interface Orders {
     
     public List<Invoice> getOrdersById(Long id);
     
+    public Invoice getOrderByInvoiceNumber(String oId);
 }

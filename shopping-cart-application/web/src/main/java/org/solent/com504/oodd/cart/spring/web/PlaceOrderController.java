@@ -5,6 +5,7 @@
 package org.solent.com504.oodd.cart.spring.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,7 @@ import org.solent.com504.oodd.cart.model.dto.Address;
 import org.solent.com504.oodd.cart.model.dto.CardType;
 import org.solent.com504.oodd.cart.model.dto.Invoice;
 import org.solent.com504.oodd.cart.model.dto.OrderStatus;
+import org.solent.com504.oodd.cart.model.dto.PurchasedItem;
 import org.solent.com504.oodd.cart.model.dto.ShoppingItem;
 import org.solent.com504.oodd.cart.model.dto.User;
 import org.solent.com504.oodd.cart.model.dto.UserRole;
@@ -213,7 +215,11 @@ public class PlaceOrderController {
                 return "redirect:checkout";
             } else {
                 Invoice order = new Invoice();
-                order.setPurchasedItems(shoppingCartItems);
+                List<PurchasedItem> purchasedItems = new ArrayList<PurchasedItem>();
+                shoppingCartItems.forEach(item -> {
+                    purchasedItems.add(new PurchasedItem(item.getQuantity(), item.getPrice(), item));
+                });
+                order.setPurchasedItems(purchasedItems);
                 order.setAmountDue(shoppingcartTotal);
                 OrderStatus status = OrderStatus.valueOf("PAID");
                 order.setOrderStatus(status);
@@ -228,7 +234,7 @@ public class PlaceOrderController {
 
                 // reduce stock of each item purchased
                 order.getPurchasedItems().stream().map(purchasedItem -> {
-                    ShoppingItem item = shoppingService.getNewItemById(purchasedItem.getId());
+                    ShoppingItem item = shoppingService.getNewItemById(purchasedItem.getShoppingItem().getId());
                     item.setQuantity(item.getQuantity() - purchasedItem.getQuantity());
                     return item;
                 }).forEachOrdered(item -> {
@@ -254,25 +260,22 @@ public class PlaceOrderController {
             id = Long.parseLong(userId);
         }
 
-        if (oId == null && orderId == null) {
-            return "redirect:home";
+        if (orderId == null) {
+            if (oId == null) {
+                return "redirect:home";
+            }
         } else {
             oId = orderId;
         }
         
-        List<Invoice> viewOrders = orders.getOrdersById(id);
-        List<ShoppingItem> orderItems = null;
-
-        for (Invoice order : viewOrders) {
-            if (order.getInvoiceNumber().equals(oId)) {
-                orderToShow = order;
-                orderItems = orderToShow.getPurchasedItems();
-            }
-        }
+        // List<Invoice> viewOrders = orders.getOrdersById(id);
+        List<Invoice> allOrders = invoiceRepository.findAll();
+        Invoice viewOrder = orders.getOrderByInvoiceNumber(oId);
       
         // populate model with values
-        model.addAttribute("orderToShow", orderToShow);
-        model.addAttribute("orderItems", orderItems);
+        model.addAttribute("allOrders", allOrders);
+        model.addAttribute("viewOrder", viewOrder);
+        model.addAttribute("oId", oId);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
 

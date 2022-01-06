@@ -27,5 +27,17 @@ public class OrdersImpl implements Orders {
         return orderList;
     }
 
+    @Override
+    public Invoice getOrderByInvoiceNumber(String oId){
+        Invoice order = null;
+        List<Invoice> orders = invoiceRepository.findByInvoiceNumber(oId);
+
+        if (!orders.isEmpty()) {
+            order = orders.get(0);
+        }
+
+        return order;
+    }
+
     
 }
