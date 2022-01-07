@@ -41,9 +41,9 @@
                                 <span>${viewOrder.purchaser.address.houseNumber}, ${viewOrder.purchaser.address.addressLine1}<span>
                             </div>
                         </div>
-                      <hr>
                     </div>
                     <div class="col-xs-12">
+                        <hr>
                         <c:forEach var="item" items="${viewOrder.purchasedItems}">
                             <div class="row">
                                 <div class="col-xs-4">
@@ -81,18 +81,6 @@
 
         </div>
     </div>
-    <c:forEach var="item" items="${viewOrder.purchasedItems}">
-        <p>${item.shoppingItem.name} : ${item.quantity} : ${item.price}</p>
-        <hr>
-    </c:forEach>
-
-    <h1>All Orders</h1>
-    <c:forEach var="order" items="${allOrders}">
-        <c:forEach var="item" items="${order.purchasedItems}">
-            <p>${item.shoppingItem.name} : ${item.quantity} : ${item.price}</p>
-        </c:forEach>
-        <hr>
-    </c:forEach>
 </main>
 
 

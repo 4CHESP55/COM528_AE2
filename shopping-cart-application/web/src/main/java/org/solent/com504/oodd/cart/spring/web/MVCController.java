@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -424,6 +425,7 @@ public class MVCController {
     public String viewCheckout(@RequestParam(name = "action", required = false) String action,
             @RequestParam(name = "itemName", required = false) String itemName,
             @RequestParam(name = "itemUUID", required = false) String itemUuid,
+            @ModelAttribute("errorMessage") String redirectError,
             Model model,
             HttpSession session) {
 
@@ -436,6 +438,9 @@ public class MVCController {
 
         String message = "";
         String errorMessage = "";
+        if (redirectError != null){
+            errorMessage = redirectError;
+        }
 
         User checkoutUser = null;
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {

@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.solent.com504.oodd.bank.client.impl.BankRestClientImpl;
 import org.solent.com504.oodd.bank.model.client.BankRestClient;
+import org.solent.com504.oodd.bank.model.dto.BankTransactionStatus;
 import org.solent.com504.oodd.bank.model.dto.CreditCard;
 import org.solent.com504.oodd.bank.model.dto.TransactionReplyMessage;
 import org.solent.com504.oodd.cart.dao.impl.InvoiceRepository;
@@ -29,6 +30,7 @@ import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.model.service.Orders;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.service.ShoppingService;
+import static org.solent.com504.oodd.cart.spring.web.UserAndLoginController.LOG;
 import org.solent.com504.oodd.cart.web.PropertiesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -43,7 +46,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("/")
-public class PlaceOrderController {
+public class OrderController {
 
     @Autowired
     PropertiesDao propertiesDao;
@@ -68,7 +71,7 @@ public class PlaceOrderController {
     @Autowired
     UserRepository userRepository;
 
-    final static Logger LOG = LogManager.getLogger(PlaceOrderController.class);
+    final static Logger LOG = LogManager.getLogger(OrderController.class);
 
     private User getSessionUser(HttpSession session) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -80,9 +83,63 @@ public class PlaceOrderController {
         }
         return sessionUser;
     }
-
-    @RequestMapping(value = "/placeOrder", method = {RequestMethod.POST})
+    
+    @RequestMapping(value = "/orders", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPaymentSettings(@RequestParam(name = "action", required = false) String action,
+            @RequestParam(name = "orderId", required = false) String orderId,
+            @RequestParam(name = "status", required = false) String status,
+            Model model,
+            HttpSession session){
+        
+        // get sessionUser from session
+        User sessionUser = getSessionUser(session);
+        model.addAttribute("sessionUser", sessionUser);
+
+        // used to set tab selected
+        model.addAttribute("selectedPage", "orders");
+
+        String message = "";
+        String errorMessage = "";
+        String role = null;
+        
+        List<Invoice> viewOrders = null;
+        Invoice viewOrder = null;
+        
+        if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
+            if (UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
+                role = "administrator";
+                viewOrders = invoiceRepository.findAll();
+            } else {
+                Long id = sessionUser.getId();
+                viewOrders = orders.getOrdersById(id);
+            }
+        } 
+        
+        if (action == null) {
+            
+        } else if ("viewOrder".equals(action)) {
+            viewOrders = null;
+            viewOrder = orders.getOrderByInvoiceNumber(orderId);   
+        } else if ("updateStatus".equals(action)) {
+            Invoice orderToUpdate = orders.getOrderByInvoiceNumber(orderId);
+            OrderStatus finalStatus = OrderStatus.valueOf(status);
+            orderToUpdate.setOrderStatus(finalStatus);
+            invoiceRepository.save(orderToUpdate);
+            message = "Updated order status";
+        }
+        
+               
+        model.addAttribute("viewOrders", viewOrders);
+        model.addAttribute("role", role);
+        model.addAttribute("viewOrder", viewOrder);
+        model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
+        
+        return "orders";
+    }
+
+    @RequestMapping(value = "/placeOrder", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewPlaceOrder(@RequestParam(name = "action", required = false) String action,
             @RequestParam(name = "userId", required = false) String userId,
             @RequestParam(name = "orderId", required = false) String orderId,
             @RequestParam(name = "URL", required = false) String URL,
@@ -103,6 +160,7 @@ public class PlaceOrderController {
             @RequestParam(value = "telephone", required = false) String telephone,
             @RequestParam(value = "mobile", required = false) String mobile,
             @RequestParam(value = "cardType", required = false) String cardType,
+            RedirectAttributes redirectAttributes,
             Model model,
             HttpSession session) throws IOException {
 
@@ -204,6 +262,8 @@ public class PlaceOrderController {
 
             // if the cart has changed due to stock redirect to cart
             if (cartChange) {
+                errorMessage = "Your cart has changed due to stock levels";
+                redirectAttributes.addAttribute("errorMessage", errorMessage);
                 return "redirect:checkout";
             }
 
@@ -211,7 +271,9 @@ public class PlaceOrderController {
             TransactionReplyMessage result = client.transferMoney(fromCard, toCard, shoppingcartTotal);
 
             // if failed return to the checkout page
-            if (result.getStatus().equals(1)) {
+            if (result.getStatus().equals(BankTransactionStatus.FAIL)) {
+                errorMessage = "Payment not successful, please try again";
+                redirectAttributes.addAttribute("errorMessage", errorMessage);
                 return "redirect:checkout";
             } else {
                 Invoice order = new Invoice();
@@ -268,7 +330,6 @@ public class PlaceOrderController {
             oId = orderId;
         }
         
-        // List<Invoice> viewOrders = orders.getOrdersById(id);
         List<Invoice> allOrders = invoiceRepository.findAll();
         Invoice viewOrder = orders.getOrderByInvoiceNumber(oId);
       

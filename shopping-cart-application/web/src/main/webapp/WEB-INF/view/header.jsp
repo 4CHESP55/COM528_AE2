@@ -122,11 +122,8 @@
                                         <form id="profile" method="GET" action="./viewModifyUser">
                                             <input type="hidden" name="username" value="${sessionUser.username}"/>
                                         </form>
-                                        <form id="orders" method="GET" action="./orders">
-                                            <input type="hidden" name="username" value="${sessionUser.username}"/>
-                                        </form>
                                         <li><a onclick="document.forms['profile'].submit()">My Profile</a></li>
-                                        <li><a onclick="document.forms['orders'].submit()">My Orders</a></li>
+                                        <li><a href="./orders">My Orders</a></li>
                                         <li><a onclick="document.forms['logoutForm'].submit()">Logout</a></li>
                                     </ul>
                                 </li>

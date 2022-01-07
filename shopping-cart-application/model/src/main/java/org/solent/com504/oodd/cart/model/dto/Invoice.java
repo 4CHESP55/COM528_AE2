@@ -67,7 +67,7 @@ public class Invoice {
         this.invoiceNumber = invoiceNumber;
     }
 
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     public Date getDateOfPurchase() {
         return dateOfPurchase;
     }
