@@ -261,7 +261,7 @@ Below is the use case diagram for the shopping application.
 | **Postconditions:**    | Customer order status updated
 | **Flow:**              | Shop owner navigates to "Manage Orders". <br> Clicks on "Modify order" on the order to modify. <br> Uses the drop down to change the status. <br> Clicks update.
 
-## Modify Payment Settings
+### Modify Payment Settings
 
 |                        |      |
 | :---                   | :--- |
@@ -273,7 +273,7 @@ Below is the use case diagram for the shopping application.
 | **Postconditions:**    | payment settings updated
 | **Flow:**              | Shop owner navigates to "Payment Settings". <br> Payment settings are displayed in a form. <br> Changes values in form. <br> Clicks update button to submit the changes.
 
-## Purchase items
+### Purchase items
 
 |                        |      |
 | :---                   | :--- |
