@@ -188,10 +188,6 @@ public class MVCController {
                     message = "adding " + itemName + " to cart price= " + shoppingItem.getPrice();
                     shoppingCart.addItemToCart(shoppingItem, final_buy_quantity);
                 }   break;
-            case "removeItemFromCart":
-                message = "removed " + itemName + " from cart";
-                shoppingCart.removeItemFromCart(itemUuid);
-                break;
             default:
                 message = "unknown action=" + action;
                 break;
@@ -446,25 +442,6 @@ public class MVCController {
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             List<User> userList = userRepository.findByUsername(sessionUser.getUsername());
             checkoutUser = userList.get(0);
-        }
-        if (null == action) {
-            // do nothing but show page
-        } else switch (action) {
-            case "removeItemFromCart":
-                message = "removed " + itemName + " from cart";
-                shoppingCart.removeItemFromCart(itemUuid);
-                break;
-            case "reduceItemFromCart":
-                message = "reducing  "+itemName + " in cart";
-                shoppingCart.reduceItemFromCart(itemUuid);
-                break;
-            case "increaseItemFromCart":
-                message = "increasing "+itemName + " in cart";
-                shoppingCart.increaseItemFromCart(itemUuid);
-                break;
-            default:
-                message = "unknown action=" + action;
-                break;
         }
 
         List<ShoppingItem> availableItems = shoppingService.getAvailableItems();

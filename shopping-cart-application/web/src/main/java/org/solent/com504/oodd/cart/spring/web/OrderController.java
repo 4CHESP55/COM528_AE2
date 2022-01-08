@@ -85,7 +85,7 @@ public class OrderController {
     }
     
     @RequestMapping(value = "/orders", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewPaymentSettings(@RequestParam(name = "action", required = false) String action,
+    public String viewOrders(@RequestParam(name = "action", required = false) String action,
             @RequestParam(name = "orderId", required = false) String orderId,
             @RequestParam(name = "status", required = false) String status,
             Model model,
