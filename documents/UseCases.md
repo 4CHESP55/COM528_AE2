@@ -105,91 +105,182 @@ Below is the use case diagram for the shopping application.
 | **Postconditions:**    | Item deleted
 | **Flow:**              | Shop Owner navigates to "Manage catalog" page. <br> Clicks on "delete item" button on the item they want to delete.
 
-### Owner Login
+### Accounts
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Shop Owner Login to system    
+| **Feature No.**        | 1.1
+| **Feature Name**       | Shop owner create any acocunt
+| **Description:**       | Shop owner should be able to create any type of account
 | **Actors:**            | Shop Owner
-| **Preconditions:**     | System not logged in
-| **Postconditions:**    | System logged in
-| **Flow:**              | Shop Owner logs in using known code
-| **Alternative Flows:** | Error message if wrong code used
-| **Exceptions:**        | not required if machine already logged in
-| **Requirements:**      | If first time login ask shop owner to setup bank details/card for payments to go to
-### Accepted transaction
+| **Preconditions:**     | Shop owner logged in
+| **Postconditions:**    | New account created
+| **Flow:**              | Shop owner navigates to "Manage users". <br> Clicks on button to add account. <br> Fills out user details. <br> clicks to save user.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Purchasing goods accepted     
-| **Actors:**            | Shop Owner & Customer
-| **Preconditions:**     | Customer wants to buy goods
-| **Postconditions:**    | Customer has bought goods
-| **Flow:**              | Shop owner enters details - accepted from bank 
-| **Alternative Flows:** | 
-| **Exceptions:**        | 
-| **Requirements:**      | Customers card accepted
-### Rejected Transaction
+| **Feature No.**        | 2.1.2
+| **Feature Name**       | Customer creates account
+| **Description:**       | A customer should be able to create an account
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer is not logged in
+| **Postconditions:**    | Customer is logged into new account
+| **Flow:**              | Customer clicks on link to register. <br> Fills in username and password. <br> Customer is now logged in on the page to add more details.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Purchasing goods rejected
-| **Actors:**            | Shop Owner & Customer
-| **Preconditions:**     | Customer wants to buy goods
-| **Postconditions:**    | Unable to purchase goods
-| **Flow:**              | Shop owner enters details - declined from bank 
-| **Alternative Flows:** | 
-| **Exceptions:**        | 
-| **Requirements:**      | customers card rejected
-### No Wifi/Internet
+| **Feature No.**        | 2.2.1
+| **Feature Name**       | Shop owner enable/disable accounts
+| **Description:**       | The Shop owner should be able to enable and disable accounts
+| **Actors:**            | Shop Owner
+| **Preconditions:**     | Shop owner logged in 
+| **Postconditions:**    | User account disabled
+| **Flow:**              | Shop owner navigates to "Manage users". <br> Clicks "modify user" on user to disable. <br> changes item in form for status from enabled to disabled. <br> Clicks save to submit form.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Lack of Wifi/Internet    
-| **Actors:**            | Shop owner
-| **Preconditions:**     | Unable to reach Wifi
-| **Postconditions:**    | Error message stating no internet
-| **Flow:**              | Unable to complete tranaction due to lack of wifi/internet
-| **Alternative Flows:** | 
-| **Exceptions:**        | Wifi/Internte Connected
-| **Requirements:**      | no Internet signal
-### Customer/Owner cancels transaction
+| **Feature No.**        | 2.2.2
+| **Feature Name**       | Shop owner modify account role
+| **Description:**       | The Shop owner should be able to modify any accounts role
+| **Actors:**            | Shop Owner
+| **Preconditions:**     | Shop owner logged in
+| **Postconditions:**    | User account role changed
+| **Flow:**              | Shop owner navigates to "Manage users". <br> Clicks "modify user" on user to change role. <br> changes item in form for role. <br> Clicks save to submit form.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Customer/Owner cancels transaction     
-| **Actors:**            | Owner / Customer
-| **Preconditions:**     | During Transaction
-| **Postconditions:**    | Transaction cancelled
-| **Flow:**              | During trasaction cancel button is pressed and stops actions
-| **Alternative Flows:** | Cancel is pressed before transaction and starts again. 
-| **Exceptions:**        | 
-| **Requirements:**      | Stops transaction
-### Refund of transation
+| **Feature No.**        | 2.2.3
+| **Feature Name**       | Customer modify account details
+| **Description:**       | A Customer should be able to modify account details
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer logged in
+| **Postconditions:**    | Customer details changed
+| **Flow:**              | Customer navigates to "Profile". <br> Clicks through form changing any fields. <br> Clicks update to save new details.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Refund of transation     
-| **Actors:**            | Owner / Customer
-| **Preconditions:**     | Transaction already completed
-| **Postconditions:**    | Transaction reversed
-| **Flow:**              | Reversal of funds completed
-| **Alternative Flows:** | Alternative Flows
-| **Exceptions:**        | Execptions
-| **Requirements:**      | Money transfered from owner to Customer
-### Refund of transation failed
+| **Feature No.**        | 2.3
+| **Feature Name**       | Delete account
+| **Description:**       | The Shop owner should be able to delete any account
+| **Actors:**            | Shop Owner
+| **Preconditions:**     | Shop owner logged in
+| **Postconditions:**    | Account deleted
+| **Flow:**              | Shop owner navigates to "manage users". <br> Clicks "delete user" on user to delete.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Refund of transation failed     
-| **Actors:**            | Owner / Customer
-| **Preconditions:**     | Transaction already completed
-| **Postconditions:**    | Transaction reversal failed
-| **Flow:**              | Reversal of funds not completed
-| **Alternative Flows:** | Alternative Flows
-| **Exceptions:**        | Execptions
-| **Requirements:**      | Not enough Money in owner account to complete reversal
-### Shop owner logout
+| **Feature No.**        | 2.4
+| **Feature Name**       | Login to account
+| **Description:**       | Accounts should be able to be logged in to
+| **Actors:**            | Shop Owner, <br> Customer
+| **Preconditions:**     | Account logged out
+| **Postconditions:**    | Account logged in
+| **Flow:**              | Navigate to login. <br> Enter username and password.
+
 |                        |      |
 | :---                   | :--- |
-| **Description:**       | Shop owner logout    
-| **Actors:**            | Owner 
-| **Preconditions:**     | Logged in to system
-| **Postconditions:**    | Logged out of system
-| **Flow:**              | From logged in to logged out of system
-| **Alternative Flows:** | Alternative Flows
-| **Exceptions:**        | Execptions
-| **Requirements:**      | System is logged out after processed followed
+| **Feature No.**        | 2.5
+| **Feature Name**       | Log out of account
+| **Description:**       | Account logged in
+| **Actors:**            | Shop Owner, <br> Customer
+| **Preconditions:**     | Account logged in
+| **Postconditions:**    | Account logged out
+| **Flow:**              | Navigate to logout. <br> Account logged out.
+
+### Shopping Cart
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 3.1
+| **Feature Name**       | Add item to cart
+| **Description:**       | Items should be able to be added to the shopping cart
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer logged in 
+| **Postconditions:**    | Item in cart
+| **Flow:**              | Customer navigated to shop. <br> Customer clicks "add to cart" on any item. <br> Cart is updated with item.
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 3.2
+| **Feature Name**       | Modify item quantity in cart
+| **Description:**       | Items in the cart should be able to be reduced or increased in quantity
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer logged in with items in cart
+| **Postconditions:**    | Cart items quantity updated
+| **Flow:**              | Customer navigates to "Cart". <br> Clicks + or - buttons next to item in cart. <br> Cart updates.
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 3.3
+| **Feature Name**       | Remove item from cart
+| **Description:**       | Items in cart should be removeable
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer logged in with items in cart
+| **Postconditions:**    | Item no longer in cart
+| **Flow:**              | Customer navigates to "Cart". <br> Clicks button to remove item from cart. <br> Item is removed and cart is updated.
+
+### Orders
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 4.1
+| **Feature Name**       | View order
+| **Description:**       | Customers should be able to view their order
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer is logged in and has already made a purchase
+| **Postconditions:**    | Customer can see the order details
+| **Flow:**              | Customer navigates to "My Orders". <br> Clicks on order to view. <br> Order is displayed.
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 4.2.1
+| **Feature Name**       | Customer views all their orders
+| **Description:**       | Customers should be able to view their order history
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer is logged in and has already made a purchase
+| **Postconditions:**    | Customer can see all previous orders
+| **Flow:**              | Customer navigates to "My Orders". <br> All orders are shown.
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 4.2.2
+| **Feature Name**       | Shop owner views all orders
+| **Description:**       | The Shop owner should be able to view all orders
+| **Actors:**            | Shop Owner
+| **Preconditions:**     | Shop owner logged in, customers have made purchases
+| **Postconditions:**    | Shop owner can see all orders
+| **Flow:**              | Shop owner navigates to "Manage Orders". <br> All orders are shown.
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 4.3
+| **Feature Name**       | Modify order status
+| **Description:**       | The Shop owner should be able to modify the order status
+| **Actors:**            | Shop Owner
+| **Preconditions:**     | Shop owner logged in, customers have made purchases
+| **Postconditions:**    | Customer order status updated
+| **Flow:**              | Shop owner navigates to "Manage Orders". <br> Clicks on "Modify order" on the order to modify. <br> Uses the drop down to change the status. <br> Clicks update.
+
+## Modify Payment Settings
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 5
+| **Feature Name**       | Modify payment settings
+| **Description:**       | The Shop owner should be able to modify payment settings for the application
+| **Actors:**            | Shop Owner
+| **Preconditions:**     | Shop owner logged in
+| **Postconditions:**    | payment settings updated
+| **Flow:**              | Shop owner navigates to "Payment Settings". <br> Payment settings are displayed in a form. <br> Changes values in form. <br> Clicks update button to submit the changes.
+
+## Purchase items
+
+|                        |      |
+| :---                   | :--- |
+| **Feature No.**        | 6
+| **Feature Name**       | Purchase items
+| **Description:**       | The customer should be able to purchase the items in the basket
+| **Actors:**            | Customer
+| **Preconditions:**     | Customer logged in with items in basket
+| **Postconditions:**    | Order placed
+| **Flow:**              | Customer navigates to "Cart". <br> Clicks "checkout". <br> Fills in payment details. <br> Clicks "Place Order". <br> Order is placed and invoice is shown.
