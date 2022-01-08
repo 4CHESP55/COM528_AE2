@@ -5,31 +5,20 @@ This test plan provides a set of steps to test the use cases against the deliver
 ## Test Case Mapping
 For full details of the test cases see [Use Cases](UseCases.md).
 
-| Test Case | Use Case                           | 
-| :---      | :---                               | 
-|   TC01    | Login to account                   | 
-|   TC02    | Modify payment settings            | 
-|   TC03    | Log out of account                 | 
-|   TC04    | Customer creates account           | 
-|   TC05    | Customer modify account details    | 
-|   TC06    | Add item to cart                   | 
-|   TC07    | Modify item quanitity in cart      | 
-|   TC08    | Remove item from cart              | 
-|   TC09    | Purchase items                     | 
-|   TC10    | Customer views all their orders    | 
-|   TC11    | View order                         | 
-|   TC12    | Add item to catalog                | 
-|   TC13    | Enable/disable item                | 
-|   TC14    | Set item stock levels              | 
-|   TC15    | Change item image                  | 
-|   TC16    | modify item details                | 
-|   TC17    | Delete item from catalog           | 
-|   TC18    | Shop owner create any account      | 
-|   TC19    | Shop owner modify account role     | 
-|   TC20    | Shop owner enable/disable accounts | 
-|   TC21    | Delete account                     | 
-|   TC22    | Shop owner views all orders        | 
-|   TC23    | Modify order status                | 
+| Test Case | Use Case                           |  \|   | Test Case | Use Case                           | 
+| :---      | :---                               | :---  |:---       | :---                               |
+|   TC01    | Login to account                   |  \|   |   TC13    | Enable/disable item                | 
+|   TC02    | Modify payment settings            |  \|   |   TC14    | Set item stock levels              |
+|   TC03    | Log out of account                 |  \|   |   TC15    | Change item image                  |  
+|   TC04    | Customer creates account           |  \|   |   TC16    | modify item details                |  
+|   TC05    | Customer modify account details    |  \|   |   TC17    | Delete item from catalog           |  
+|   TC06    | Add item to cart                   |  \|   |   TC18    | Shop owner create any account      |  
+|   TC07    | Modify item quanitity in cart      |  \|   |   TC19    | Shop owner modify account role     | 
+|   TC08    | Remove item from cart              |  \|   |   TC20    | Shop owner enable/disable accounts | 
+|   TC09    | Purchase items                     |  \|   |   TC21    | Delete account                     |  
+|   TC10    | Customer views all their orders    |  \|   |   TC22    | Shop owner views all orders        |  
+|   TC11    | View order                         |  \|   |   TC23    | Modify order status                | 
+|   TC12    | Add item to catalog                |  \|   | 
 
 
 ## Test Steps
