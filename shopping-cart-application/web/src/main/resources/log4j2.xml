@@ -28,6 +28,16 @@
             </Policies>
             <DefaultRolloverStrategy max="1"/>
         </RollingFile>
+
+        <!-- a roling file appender limits the size of log files -->
+        <RollingFile name="localLog" fileName="${sys:user.home}/BankTransactions.log"
+                     filePattern="${APP_LOG_ROOT}/BankTransactions-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
         
     </Appenders>
     <Loggers>
@@ -37,6 +47,10 @@
         <Logger name="org.solent"  additivity="false" level="DEBUG">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="appLog"/>
+        </Logger>
+
+        <Logger name="org.solent.com504.oodd.bank.client.impl"  additivity="false" level="DEBUG">
+            <AppenderRef ref="localLog"/>
         </Logger>
         
         <Logger name="org.hibernate"  additivity="false" level="INFO">
