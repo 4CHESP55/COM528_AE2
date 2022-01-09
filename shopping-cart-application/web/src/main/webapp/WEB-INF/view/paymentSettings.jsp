@@ -16,12 +16,12 @@
     <div class="row d-flex" style="justify-content: center;">
 
         <div class="col-md-6 col-xs-8">
-            <c:if test="${message != ''}">
+            <c:if test="${not empty fn:trim(message)}">
                 <div class="alert alert-success" role="alert">
                     ${message}
                 </div>
             </c:if>
-            <c:if test="${errorMessage != ''}">
+            <c:if test="${not empty fn:trim(errorMessage)}">
                 <div class="alert alert-danger" role="alert">
                     ${errorMessage}
                 </div>

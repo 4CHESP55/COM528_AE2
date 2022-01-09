@@ -6,21 +6,21 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="org.solent.com504.oodd.cart.model.dto.User"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.UserRole"%>
 <c:set var = "selectedPage" value = "admin" scope="request"/>
 <jsp:include page="header.jsp" />
-<!-- start of users.jsp selectedPage=${selectedPage}-->
 
 <!-- Begin page content -->
 <main role="main" class="container">
 
-    <c:if test="${message != ''}">
+    <c:if test="${not empty fn:trim(message)}">
         <div class="alert alert-success" role="alert">
             ${message}
         </div>
     </c:if>
-    <c:if test="${errorMessage != ''}">
+    <c:if test="${not empty fn:trim(errorMessage)}">
         <div class="alert alert-danger" role="alert">
             ${errorMessage}
         </div>

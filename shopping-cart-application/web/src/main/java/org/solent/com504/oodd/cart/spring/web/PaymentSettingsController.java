@@ -84,6 +84,7 @@ public class PaymentSettingsController {
         String expiryDate = expiryMonth + "/" + expiryYear;
         propertiesDao.setProperty("org.solent.com504.oodd.payment.expiry", expiryDate);
         propertiesDao.setProperty("org.solent.com504.oodd.payment.issue", issue);
+        message = "Settings Updated";
         }
 
         String cURL = propertiesDao.getProperty("org.solent.com504.oodd.bank.URL");

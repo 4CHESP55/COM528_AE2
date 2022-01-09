@@ -16,12 +16,12 @@
 
 <!-- Begin page content -->
 <main role="main" class="container">
-    <c:if test="${message != ''}">
+    <c:if test="${not empty fn:trim(message)}">
         <div class="alert alert-success" role="alert">
             ${message}
         </div>
     </c:if>
-    <c:if test="${errorMessage != ''}">
+    <c:if test="${not empty fn:trim(errorMessage)}">
         <div class="alert alert-danger" role="alert">
             ${errorMessage}
         </div>

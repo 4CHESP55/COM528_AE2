@@ -5,19 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// request set in controller
-//    request.setAttribute("selectedPage","contact");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-    <c:if test="${message != ''}">
+    <c:if test="${not empty fn:trim(message)}">
         <div class="alert alert-success" role="alert">
             ${message}
         </div>
     </c:if>
-    <c:if test="${errorMessage != ''}">
+    <c:if test="${not empty fn:trim(errorMessage)}">
         <div class="alert alert-danger" role="alert">
             ${errorMessage}
         </div>

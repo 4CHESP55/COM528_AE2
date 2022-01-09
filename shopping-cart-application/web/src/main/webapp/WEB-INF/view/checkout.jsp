@@ -10,20 +10,16 @@
 <%@page import="org.solent.com504.oodd.cart.model.dto.CardType"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.Countries"%>
 <%@page import="org.solent.com504.oodd.cart.model.dto.Dates"%>
-<%
-// request set in controller
-//request.setAttribute("selectedPage", "home");
-%>
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
 
-    <c:if test="${message != ''}">
+    <c:if test="${not empty fn:trim(message)}">
         <div class="alert alert-success" role="alert">
             ${message}
         </div>
     </c:if>
-    <c:if test="${errorMessage != ''}">
+    <c:if test="${not empty fn:trim(errorMessage)}">
         <div class="alert alert-danger" role="alert">
             ${errorMessage}
         </div>
@@ -64,7 +60,7 @@
                                 </h4>
                             </div>
                             <div class="col-xs-4 text-right">
-                                <h6><strong>${item.price} <span class="text-muted">x</span> ${item.quantity}</strong></h6>
+                                <h6><strong>£${item.price} <span class="text-muted">x</span> ${item.quantity}</strong></h6>
                             </div>
                         </div>
                         <hr>

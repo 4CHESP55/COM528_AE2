@@ -10,12 +10,12 @@
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-    <c:if test="${message != ''}">
+    <c:if test="${not empty fn:trim(message)}">
         <div class="alert alert-success" role="alert">
             ${message}
         </div>
     </c:if>
-    <c:if test="${errorMessage != ''}">
+    <c:if test="${not empty fn:trim(errorMessage)}">
         <div class="alert alert-danger" role="alert">
             ${errorMessage}
         </div>
@@ -57,7 +57,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="itemQuantity">Quantity</label>
-                                <input type="text" class="form-control" name="itemQuantity" id="itemQuantity" placeholder="Amount">
+                                <input type="text" class="form-control" name="itemQuantity" id="itemQuantity" placeholder="Amount" value="1">
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                                 Item: ${item.name}
                             </div>
                             <div class="col-md-2">
-                                Price: ${item.price}
+                                Price: £${item.price}
                             </div>
                             <div class="col-md-3">
                                 Description: ${fn:substring(item.description, 0, 30)}...         

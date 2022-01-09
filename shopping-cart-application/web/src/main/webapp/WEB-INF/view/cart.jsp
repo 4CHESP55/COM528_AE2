@@ -7,20 +7,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%
-// request set in controller
-//request.setAttribute("selectedPage", "home");
-%>
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
 
-    <c:if test="${message != ''}">
+    <c:if test="${not empty fn:trim(message)}">
         <div class="alert alert-success" role="alert">
             ${message}
         </div>
     </c:if>
-    <c:if test="${errorMessage != ''}">
+    <c:if test="${not empty fn:trim(errorMessage)}">
         <div class="alert alert-danger" role="alert">
             ${errorMessage}
         </div>
@@ -65,7 +61,7 @@
                     </div>
                     <div class="col-xs-6">
                         <div class="col-xs-6 text-right">
-                            <h6><strong>${item.price} <span class="text-muted">x</span> ${item.quantity}</strong></h6>
+                            <h6><strong>£${item.price} <span class="text-muted">x</span> ${item.quantity}</strong></h6>
                         </div>
                         <div class="col-xs-1">
                             <form action="./cart" method="post">
