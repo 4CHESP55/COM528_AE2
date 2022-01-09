@@ -1,0 +1,17 @@
+org.solent.com504.oodd.bank.client.impl
+org.solent.com504.oodd.bank.client.test.manual
+org.solent.com504.oodd.bank.model.client
+org.solent.com504.oodd.bank.model.dto
+org.solent.com504.oodd.bank.model.dto.test
+org.solent.com504.oodd.cart.dao.impl
+org.solent.com504.oodd.cart.dao.test
+org.solent.com504.oodd.cart.model.dto
+org.solent.com504.oodd.cart.model.service
+org.solent.com504.oodd.cart.service
+org.solent.com504.oodd.cart.service.spring.test
+org.solent.com504.oodd.cart.service.test
+org.solent.com504.oodd.cart.spring.service
+org.solent.com504.oodd.cart.spring.web
+org.solent.com504.oodd.cart.web
+org.solent.com504.oodd.password
+org.solent.com504.oodd.password.test
