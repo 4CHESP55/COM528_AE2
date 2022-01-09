@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 Paul Chester
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.solent.com504.oodd.bank.model.dto;
 
 import javax.persistence.Embedded;
@@ -23,62 +38,118 @@ public class BankAccount {
 
     private boolean active = true;
 
+    /**
+     *
+     * @return
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     @Embedded
     public User getOwner() {
         return owner;
     }
 
+    /**
+     *
+     * @param owner
+     */
     public void setOwner(User owner) {
         this.owner = owner;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSortcode() {
         return sortcode;
     }
 
+    /**
+     *
+     * @param sortcode
+     */
     public void setSortcode(String sortcode) {
         this.sortcode = sortcode;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getAccountNo() {
         return accountNo;
     }
 
+    /**
+     *
+     * @param accountNo
+     */
     public void setAccountNo(String accountNo) {
         this.accountNo = accountNo;
     }
 
+    /**
+     *
+     * @return
+     */
     @Embedded
     public CreditCard getCreditcard() {
         return creditcard;
     }
 
+    /**
+     *
+     * @param creditcard
+     */
     public void setCreditcard(CreditCard creditcard) {
         this.creditcard = creditcard;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     *
+     * @param active
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getBalance() {
         return balance;
     }
 
+    /**
+     *
+     * @param balance
+     */
     public void setBalance(Double balance) {
         this.balance = balance;
     }

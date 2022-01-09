@@ -70,7 +70,7 @@
             </tbody>
         </table>
         <form action="./register" method="GET">
-            <button class="btn" type="submit" >Add User</button>
+            <button class="btn btn-success" type="submit" >Add User</button>
         </form> 
     </div>
 </main>
