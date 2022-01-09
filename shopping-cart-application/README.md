@@ -1,8 +1,16 @@
-# Ehopping Application program template
+# Shopping Application 
 
-This is based upon the Shopping Cart Using Spring with Bootstrap in session 6
+This application uses a range of technologies including:
+- Java ([ref](https://docs.oracle.com/javase/7/docs/technotes/guides/language/))
+- Spring Data JPA ([ref](https://spring.io/projects/spring-data-jpa))
+- Spring Web MVC Framework ([ref](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html))
+- JavaServer Pages ([ref](https://www.oracle.com/java/technologies/jspt.html))
+- JQuery ([ref](https://jquery.com/))
+- JavaScript ([ref](https://www.javascript.com/))
+- BootStrap CSS ([ref](https://getbootstrap.com/docs/3.4/css/))
+- HTML ([ref](https://html.spec.whatwg.org/multipage/))
 
-
+These are all used together to produce the complete Shopping Application.
 
 ### To run using stand alone spring boot maven plugin
 
