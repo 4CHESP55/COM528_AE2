@@ -36,13 +36,7 @@ public class ShoppingItemCatalogRepositoryTest {
     private static final Logger LOG = LogManager.getLogger(ShoppingItemCatalogRepositoryTest.class);
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private ShoppingItemCatalogRepository shoppingItemCatalogRepository;
-
-    @Autowired
-    private InvoiceRepository invoiceRepository;
 
     @Test
     public void testCatalog() {
@@ -56,7 +50,7 @@ public class ShoppingItemCatalogRepositoryTest {
         shoppingItem1.setQuantity(1);
         shoppingItem1.setUuid(UUID.randomUUID().toString());
 
-        shoppingItem1 = shoppingItemCatalogRepository.save(shoppingItem1);
+        shoppingItemCatalogRepository.save(shoppingItem1);
 
         ShoppingItem shoppingItem2 = new ShoppingItem();
         shoppingItem2.setName("item 1");
@@ -64,7 +58,7 @@ public class ShoppingItemCatalogRepositoryTest {
         shoppingItem2.setQuantity(1);
         shoppingItem2.setUuid(UUID.randomUUID().toString());
 
-        shoppingItem2 = shoppingItemCatalogRepository.save(shoppingItem2);
+        shoppingItemCatalogRepository.save(shoppingItem2);
 
         assertEquals(2, shoppingItemCatalogRepository.count());
 

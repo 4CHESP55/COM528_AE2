@@ -53,17 +53,12 @@ public class ShoppingCartImpl implements ShoppingCart {
 
     @Override
     public void removeItemFromCart(String itemUuid) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        // ANSWER
         itemMap.remove(itemUuid);
     }
     
     @Override
     public void removeAllFromCart() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        // ANSWER
         itemMap.clear();
-        // generate a new hashmap
         itemMap = new HashMap<>();
     }
     

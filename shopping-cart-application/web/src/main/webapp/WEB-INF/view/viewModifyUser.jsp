@@ -16,8 +16,16 @@
 
 <!-- Begin page content -->
 <main role="main" class="container">
-    <div style="color:red;">${errorMessage}</div>
-    <div style="color:green;">${message}</div>
+    <c:if test="${message != ''}">
+        <div class="alert alert-success" role="alert">
+            ${message}
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != ''}">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </c:if>
 
     <div class="row d-flex" style="justify-content: center;">
 
@@ -170,7 +178,7 @@
                                                 <label for="country">Country</label>
                                                 <select name="country" class="form-control" id="country">
                                                     <option value="0" label="Select a country ... " <c:if test="${modifyUser.address.country == null}"> selected  </c:if>>Select a country ... </option>
-                                                    <optgroup id="country-optgroup-Africa" label="Africa">
+                                                        <optgroup id="country-optgroup-Africa" label="Africa">
                                                         <c:forEach var="country" items="${Countries.africaMap}">
                                                             <option value="${country.key}" <c:if test="${modifyUser.address.country == country.key}"> selected  </c:if>>${country.value}</option>
                                                         </c:forEach>
@@ -231,8 +239,8 @@
                                                 <label for="CreditCardType">Card Type</label>
                                                 <select id="CreditCardType" name="cardType" class="form-control">
                                                     <c:forEach var="value" items="${CardType.values()}">
-                                                            <option value="${value}" <c:if test="${modifyUser.cardType == value}"> selected  </c:if>>${value}</option>
-                                                        </c:forEach>
+                                                        <option value="${value}" <c:if test="${modifyUser.cardType == value}"> selected  </c:if>>${value}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                         </div>

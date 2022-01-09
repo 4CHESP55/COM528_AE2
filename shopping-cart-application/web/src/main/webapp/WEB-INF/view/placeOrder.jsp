@@ -38,7 +38,7 @@
                             </div>
                             <div class="col-xs-6">
                                 <span class="text-muted" style="display: block">Address</span>
-                                <span>${viewOrder.purchaser.address.houseNumber}, ${viewOrder.purchaser.address.addressLine1}<span>
+                                <span>${viewOrder.purchaser.address.houseNumber}, ${viewOrder.purchaser.address.addressLine1}</span>
                             </div>
                         </div>
                     </div>
@@ -65,8 +65,8 @@
                                     </h4>
                                 </div>
                                 <div class="col-xs-4 text-right">
-                                        <h6><strong>£${item.price} <span class="text-muted">x</span> ${item.quantity}</strong></h6>
-                                    
+                                    <h6><strong>£${item.price} <span class="text-muted">x</span> ${item.quantity}</strong></h6>
+
                                 </div>
                             </div>
                         </c:forEach>
@@ -82,8 +82,6 @@
         </div>
     </div>
 </main>
-
-
 
 
 <jsp:include page="footer.jsp" />

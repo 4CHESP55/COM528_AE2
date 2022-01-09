@@ -18,8 +18,16 @@
 <!-- Begin page content -->
 <main role="main" class="container">
 
-    <p class="text-success">${message}</p>
-    <p class="text-danger">${errorMessage}</p>
+    <c:if test="${message != ''}">
+        <div class="alert alert-success" role="alert">
+            ${message}
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != ''}">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </c:if>
     <form class="form-horizontal" method="post" action="./placeOrder" >
         <div class="col-md-6">
             <div class="panel panel-info">

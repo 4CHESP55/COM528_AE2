@@ -16,8 +16,16 @@
     <div class="row d-flex" style="justify-content: center;">
 
         <div class="col-md-6 col-xs-8">
-            <div style="color:red;">${errorMessage}</div>
-            <div style="color:green;">${message}</div>
+            <c:if test="${message != ''}">
+                <div class="alert alert-success" role="alert">
+                    ${message}
+                </div>
+            </c:if>
+            <c:if test="${errorMessage != ''}">
+                <div class="alert alert-danger" role="alert">
+                    ${errorMessage}
+                </div>
+            </c:if>
             <form class="form-horizontal" action="./paymentSettings" method="post">
                 <div class="panel panel-info">
                     <div class="panel-heading">

@@ -37,12 +37,6 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private ShoppingItemCatalogRepository shoppingItemCatalogRepository;
-
-    @Autowired
-    private InvoiceRepository invoiceRepository;
-
     @Test
     public void testUser() {
         LOG.debug("****************** starting test");

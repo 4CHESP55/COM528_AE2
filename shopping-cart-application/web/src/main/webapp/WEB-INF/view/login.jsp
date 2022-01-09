@@ -12,8 +12,16 @@
 <jsp:include page="header.jsp" />
 <!-- Begin page content -->
 <main role="main" class="container">
-    <div style="color:red;">${errorMessage}</div>
-    <div style="color:green;">${message}</div>
+    <c:if test="${message != ''}">
+        <div class="alert alert-success" role="alert">
+            ${message}
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != ''}">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </c:if>
     <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
         <div class="panel panel-default" >
             <div class="panel-heading">

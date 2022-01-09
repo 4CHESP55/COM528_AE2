@@ -65,6 +65,7 @@ public class InvoiceRepositoryTest {
         invoice1.setAmountDue(100.0);
         invoice1.setDateOfPurchase(new Date());
         invoice1.setPurchaser(user1);
+        invoice1.setInvoiceNumber("123");
 
         invoice1 = invoiceRepository.save(invoice1);
         assertEquals(1, invoiceRepository.count());
@@ -75,9 +76,9 @@ public class InvoiceRepositoryTest {
         shoppingItem1.setPrice(100.1);
         shoppingItem1.setQuantity(1);
         shoppingItem1.setUuid(UUID.randomUUID().toString());
-        shoppingItem1 = shoppingItemCatalogRepository.save(shoppingItem1);
+        shoppingItemCatalogRepository.save(shoppingItem1);
 
-        List<PurchasedItem> purchasedItems = new ArrayList<PurchasedItem>();
+        List<PurchasedItem> purchasedItems = new ArrayList<>();
 
         invoice1.setPurchasedItems(purchasedItems);
         invoice1 = invoiceRepository.save(invoice1);

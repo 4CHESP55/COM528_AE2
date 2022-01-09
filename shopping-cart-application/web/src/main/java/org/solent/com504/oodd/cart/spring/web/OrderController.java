@@ -30,7 +30,6 @@ import org.solent.com504.oodd.cart.model.dto.UserRole;
 import org.solent.com504.oodd.cart.model.service.Orders;
 import org.solent.com504.oodd.cart.model.service.ShoppingCart;
 import org.solent.com504.oodd.cart.model.service.ShoppingService;
-import static org.solent.com504.oodd.cart.spring.web.UserAndLoginController.LOG;
 import org.solent.com504.oodd.cart.web.PropertiesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,14 +82,14 @@ public class OrderController {
         }
         return sessionUser;
     }
-    
+
     @RequestMapping(value = "/orders", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewOrders(@RequestParam(name = "action", required = false) String action,
             @RequestParam(name = "orderId", required = false) String orderId,
             @RequestParam(name = "status", required = false) String status,
             Model model,
-            HttpSession session){
-        
+            HttpSession session) {
+
         // get sessionUser from session
         User sessionUser = getSessionUser(session);
         model.addAttribute("sessionUser", sessionUser);
@@ -101,10 +100,10 @@ public class OrderController {
         String message = "";
         String errorMessage = "";
         String role = null;
-        
+
         List<Invoice> viewOrders = null;
         Invoice viewOrder = null;
-        
+
         if (!UserRole.ANONYMOUS.equals(sessionUser.getUserRole())) {
             if (UserRole.ADMINISTRATOR.equals(sessionUser.getUserRole())) {
                 role = "administrator";
@@ -113,28 +112,34 @@ public class OrderController {
                 Long id = sessionUser.getId();
                 viewOrders = orders.getOrdersById(id);
             }
-        } 
-        
-        if (action == null) {
-            
-        } else if ("viewOrder".equals(action)) {
-            viewOrders = null;
-            viewOrder = orders.getOrderByInvoiceNumber(orderId);   
-        } else if ("updateStatus".equals(action)) {
-            Invoice orderToUpdate = orders.getOrderByInvoiceNumber(orderId);
-            OrderStatus finalStatus = OrderStatus.valueOf(status);
-            orderToUpdate.setOrderStatus(finalStatus);
-            invoiceRepository.save(orderToUpdate);
-            message = "Updated order status";
         }
-        
-               
+
+        if (null == action) {
+
+        } else {
+            switch (action) {
+                case "viewOrder":
+                    viewOrders = null;
+                    viewOrder = orders.getOrderByInvoiceNumber(orderId);
+                    break;
+                case "updateStatus":
+                    Invoice orderToUpdate = orders.getOrderByInvoiceNumber(orderId);
+                    OrderStatus finalStatus = OrderStatus.valueOf(status);
+                    orderToUpdate.setOrderStatus(finalStatus);
+                    invoiceRepository.save(orderToUpdate);
+                    message = "Updated order status";
+                    break;
+                default:
+                    break;
+            }
+        }
+
         model.addAttribute("viewOrders", viewOrders);
         model.addAttribute("role", role);
         model.addAttribute("viewOrder", viewOrder);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
-        
+
         return "orders";
     }
 
@@ -174,11 +179,9 @@ public class OrderController {
         String message = "";
         String errorMessage = "";
 
-        Long id = null;
-        String oId = null;
-        Invoice orderToShow = null;
-        
-        User checkoutUser = null;
+        String oId;
+        User checkoutUser;
+        Invoice viewOrder = null;
 
         if ("checkout".equals(action)) {
 
@@ -277,7 +280,7 @@ public class OrderController {
                 return "redirect:checkout";
             } else {
                 Invoice order = new Invoice();
-                List<PurchasedItem> purchasedItems = new ArrayList<PurchasedItem>();
+                List<PurchasedItem> purchasedItems = new ArrayList<>();
                 shoppingCartItems.forEach(item -> {
                     purchasedItems.add(new PurchasedItem(item.getQuantity(), item.getPrice(), item));
                 });
@@ -306,37 +309,13 @@ public class OrderController {
                 // clear the shopping cart
                 shoppingCart.removeAllFromCart();
 
-                // display confirmation page with option to cancel for an immediate refund
+                // display confirmation page
+                viewOrder = orders.getOrderByInvoiceNumber(oId);
             }
-        }
-        
-        if (userId == null) {
-            if (!sessionUser.getUserRole().equals(UserRole.ANONYMOUS)) {
-                id = sessionUser.getId();
-            } else if (checkoutUser != null){
-                id = checkoutUser.getId();
-            }else {
-                return "redirect:home";
-            }
-        } else {
-            id = Long.parseLong(userId);
         }
 
-        if (orderId == null) {
-            if (oId == null) {
-                return "redirect:home";
-            }
-        } else {
-            oId = orderId;
-        }
-        
-        List<Invoice> allOrders = invoiceRepository.findAll();
-        Invoice viewOrder = orders.getOrderByInvoiceNumber(oId);
-      
         // populate model with values
-        model.addAttribute("allOrders", allOrders);
         model.addAttribute("viewOrder", viewOrder);
-        model.addAttribute("oId", oId);
         model.addAttribute("message", message);
         model.addAttribute("errorMessage", errorMessage);
 

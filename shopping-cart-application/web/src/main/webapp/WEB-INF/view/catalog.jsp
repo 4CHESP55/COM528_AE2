@@ -155,12 +155,12 @@
                                 <div class="form-group">
                                     <label>Image</label>
                                     <img style="height: 180px; width: 100%; background-color: lightgrey;"  
-                                                         <c:choose>
-                                                             <c:when test="${item.image.base64image != null}">
-                                                                 src="data:image/jpeg;base64,${item.image.base64image}"
-                                                             </c:when>
-                                                         </c:choose>
-                                                     
+                                         <c:choose>
+                                             <c:when test="${item.image.base64image != null}">
+                                                 src="data:image/jpeg;base64,${item.image.base64image}"
+                                             </c:when>
+                                         </c:choose>
+
                                          />
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#flipFlop${item.id}">
                                         Edit image
@@ -171,35 +171,35 @@
                                 <div class="form-group">
                                     <label for="itemDesc">Description</label>
                                     <textarea class="form-control" name="itemDesc" id="itemDesc" style="resize: none" rows="10" maxlength="5000" >${item.description}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="btn btn-success">
-                                                    <c:choose>
-                                                        <c:when test="${item.enabled == true}">
-                                                            <input type="radio" name="enabled" id="optionsRadios" value="true" checked>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <input type="radio" name="enabled" id="optionsRadios" value="true">
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    Enabled
-                                                </label>
-                                                <label class="btn btn-secondary">
-                                                    <c:choose>
-                                                        <c:when test="${item.enabled == false}">
-                                                            <input type="radio" name="enabled" id="optionsRadios" value="false" checked>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <input type="radio" name="enabled" id="optionsRadios" value="false">
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    Disabled
-                                                </label>
-                                                <input type="hidden" name="itemId" value="${item.id}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="btn btn-success">
+                                        <c:choose>
+                                            <c:when test="${item.enabled == true}">
+                                                <input type="radio" name="enabled" id="optionsRadios" value="true" checked>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="radio" name="enabled" id="optionsRadios" value="true">
+                                            </c:otherwise>
+                                        </c:choose>
+                                        Enabled
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <c:choose>
+                                            <c:when test="${item.enabled == false}">
+                                                <input type="radio" name="enabled" id="optionsRadios" value="false" checked>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="radio" name="enabled" id="optionsRadios" value="false">
+                                            </c:otherwise>
+                                        </c:choose>
+                                        Disabled
+                                    </label>
+                                    <input type="hidden" name="itemId" value="${item.id}">
                                     <input type="hidden" name="action" value="updateItem">
                                     <button type="submit" class="btn btn-default">Update Item</button>
                                 </div>

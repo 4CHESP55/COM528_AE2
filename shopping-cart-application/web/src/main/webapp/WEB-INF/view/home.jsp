@@ -15,8 +15,16 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     <H1>Home</H1>
-    <div style="color:red;">${errorMessage}</div>
-    <div style="color:green;">${message}</div>
+        <c:if test="${message != ''}">
+        <div class="alert alert-success" role="alert">
+            ${message}
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != ''}">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </c:if>
 
 
 

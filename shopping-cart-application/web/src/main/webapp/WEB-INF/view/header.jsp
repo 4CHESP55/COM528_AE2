@@ -17,7 +17,7 @@
         <link rel="icon" href="../../favicon.ico">
         <!--<link rel="canonical" href="https://getbootstrap.com/docs/3.3/examples/navbar/">-->
 
-        <title>Navbar Template for Bootstrap</title>
+        <title>Shopping Cart Application</title>
 
         <!-- Bootstrap core CSS -->
         <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
@@ -43,15 +43,13 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Project name</a>
+                        <a class="navbar-brand" href="#">Shopping Cart Aplication</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="./home">Home</a></li>
                             <li <% if ("shop".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./shop">Shop</a></li> 
-                            <li <% if ("cart".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./cart">Cart</a></li> 
-                            <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="./about">About</a></li> 
-                            <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./contact">Contact</a></li>                          
+                            <li <% if ("cart".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="./cart">Cart</a></li>                          
                         </ul>
                         <form class="navbar-form navbar-left" action="./shop" method="get">
                             <div class="form-group">
@@ -68,11 +66,11 @@
                                             <span class="item">
                                                 <span class="item-left">
                                                     <img style="width: 50px"
-                                                                         <c:choose>
-                                                                             <c:when test="${item.image.base64image != null}">
-                                                                                 src="data:image/jpeg;base64,${item.image.base64image}"
-                                                                             </c:when>
-                                                                         </c:choose>
+                                                         <c:choose>
+                                                             <c:when test="${item.image.base64image != null}">
+                                                                 src="data:image/jpeg;base64,${item.image.base64image}"
+                                                             </c:when>
+                                                         </c:choose>
                                                          />
                                                     <span class="item-info">
                                                         <span class="item-name">${item.name}</span>
@@ -96,26 +94,26 @@
                             <!-- user role:  ${sessionUser.userRole}-->
                             <c:if test="${sessionUser.userRole =='ANONYMOUS'}">
                                 <li><a href="./login">Login or create a new Account</a></li>
-                            </c:if>
-                            <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
+                                </c:if>
+                                <c:if test="${sessionUser.userRole !='ANONYMOUS'}">
                                 <li class="dropdown" >
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <c:choose>
-                                        <c:when test="${sessionUser.userRole =='ADMINISTRATOR'}">
-                                            Admin 
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${sessionUser.username}
-                                        </c:otherwise>
+                                            <c:when test="${sessionUser.userRole =='ADMINISTRATOR'}">
+                                                Admin 
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${sessionUser.username}
+                                            </c:otherwise>
                                         </c:choose>
-                                            <span class="caret"></span></a>
+                                        <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <c:if test="${sessionUser.userRole =='ADMINISTRATOR'}">
-                                        <li><a href="./users">Manage Users</a></li>
-                                        <li><a href="./catalog">Manage Catalogue</a></li>
-                                        <li><a href="./orders">Manage Orders</a></li>
-                                        <li><a href="./paymentSettings">Payment Settings</a></li>
-                                        <hr>
+                                            <li><a href="./users">Manage Users</a></li>
+                                            <li><a href="./catalog">Manage Catalogue</a></li>
+                                            <li><a href="./orders">Manage Orders</a></li>
+                                            <li><a href="./paymentSettings">Payment Settings</a></li>
+                                            <hr>
                                         </c:if>
                                         <form id="logoutForm" method="POST" action="./logout">
                                         </form>
@@ -127,7 +125,7 @@
                                         <li><a onclick="document.forms['logoutForm'].submit()">Logout</a></li>
                                     </ul>
                                 </li>
-                                </c:if>  
+                            </c:if>  
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->

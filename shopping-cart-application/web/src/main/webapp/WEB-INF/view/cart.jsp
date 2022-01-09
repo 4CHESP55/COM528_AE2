@@ -15,8 +15,16 @@
 <!-- Begin page content -->
 <main role="main" class="container">
 
-    <p class="text-success">${message}</p>
-    <p class="text-danger">${errorMessage}</p>
+    <c:if test="${message != ''}">
+        <div class="alert alert-success" role="alert">
+            ${message}
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != ''}">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </c:if>
 
 
     <div class="panel panel-info">
@@ -40,18 +48,18 @@
                     <div class="col-xs-2">
                         <img style="width: 100%"
 
-                                             <c:choose>
-                                                 <c:when test="${item.image.base64image != null}">
-                                                     src="data:image/jpeg;base64,${item.image.base64image}"
-                                                 </c:when>
-                                             </c:choose>
+                             <c:choose>
+                                 <c:when test="${item.image.base64image != null}">
+                                     src="data:image/jpeg;base64,${item.image.base64image}"
+                                 </c:when>
+                             </c:choose>
                              />
                     </div>
                     <div class="col-xs-4">
                         <h4 class="product-name"><strong>${item.name}</strong></h4>
                         <h4>
 
-                                        <small>${fn:substring(item.description, 0, 100)}...</small>
+                            <small>${fn:substring(item.description, 0, 100)}...</small>
 
                         </h4>
                     </div>

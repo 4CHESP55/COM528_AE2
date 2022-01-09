@@ -15,6 +15,17 @@
 <!-- Begin page content -->
 <main role="main" class="container">
 
+    <c:if test="${message != ''}">
+        <div class="alert alert-success" role="alert">
+            ${message}
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != ''}">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </c:if>
+
     <div>
         <h1>Manage Users</h1>
         <p>showing ${userListSize} users: </p>
@@ -43,7 +54,14 @@
                         <td>
                             <form action="./viewModifyUser" method="GET">
                                 <input type="hidden" name="username" value="${user.username}">
-                                <button class="btn" type="submit" >Modify User</button>
+                                <button class="btn btn-primary" type="submit" >Modify User</button>
+                            </form> 
+                        </td>
+                        <td>
+                            <form action="./users" method="GET">
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <input type="hidden" name="action" value="deleteUser">
+                                <button class="btn btn-danger" type="submit" >Delete User</button>
                             </form> 
                         </td>
                     </tr>
