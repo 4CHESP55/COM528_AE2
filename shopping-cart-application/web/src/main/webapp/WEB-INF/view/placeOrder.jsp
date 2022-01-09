@@ -51,7 +51,7 @@
 
                                          <c:choose>
                                              <c:when test="${item.shoppingItem.image.base64image != null}">
-                                                 src="data:image/jpeg;base64,${item.image.base64image}"
+                                                 src="data:image/jpeg;base64,${item.shoppingItem.image.base64image}"
                                              </c:when>
                                          </c:choose>
                                          />
